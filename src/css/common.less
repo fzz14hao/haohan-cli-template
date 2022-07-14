@@ -1,0 +1,205 @@
+@size-small: 5px;
+@size-base: 10px;
+@size-large: 15px;
+
+/*-----flex 布局--------*/
+.flex {
+  display: flex !important;
+  align-items: center;
+}
+
+.flex-wrap {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.flex-1 {
+  flex: 1 !important;
+}
+
+.flex-end {
+  display: flex !important;
+  justify-content: flex-end;
+}
+
+.hidden {
+  overflow: hidden;
+}
+
+.cus-wsh {
+  width: 100%;
+}
+
+/*-----*/
+.cus-row-title {
+  font-weight: 700;
+}
+
+/*--margin---*/
+.cus-mt-5 {
+  margin-top: @size-small;
+}
+
+.cus-mr-5 {
+  margin-right: @size-small;
+}
+
+.cus-mb-5 {
+  margin-bottom: @size-small;
+}
+
+.cus-ml-5 {
+  margin-left: @size-small;
+}
+
+.cus-mr-mb-5 {
+  margin: 0 @size-small @size-small 0;
+}
+
+.cus-mt-10 {
+  margin-top: @size-base;
+}
+
+.cus-mr-10 {
+  margin-right: @size-base;
+}
+
+.cus-mb-10 {
+  margin-bottom: @size-base;
+}
+
+.cus-ml-10 {
+  margin-left: @size-base;
+}
+
+.cus-mr-mb-10 {
+  margin: 0 @size-base @size-base 0;
+}
+
+.cus-mt-mb-10 {
+  margin: @size-base 0;
+}
+
+.cus-mt-15 {
+  margin-top: @size-large;
+}
+
+.cus-mr-15 {
+  margin-right: @size-large;
+}
+
+.cus-mb-15 {
+  margin-bottom: @size-large;
+}
+
+.cus-ml-15 {
+  margin-left: @size-large;
+}
+
+.cus-mt-20 {
+  margin-top: 20px;
+}
+
+.cus-mr-mb-15 {
+  margin: 0 @size-large @size-large 0;
+}
+
+/*--padding---*/
+.cus-padding-5 {
+  padding: @size-small;
+}
+
+.cus-pt-5 {
+  padding-top: @size-small;
+}
+
+.cus-pr-5 {
+  padding-right: @size-small;
+}
+
+.cus-pb-5 {
+  padding-bottom: @size-small;
+}
+
+.cus-pl-5 {
+  padding-left: @size-small;
+}
+
+.cus-padding-10 {
+  padding: @size-base;
+}
+
+.cus-pt-10 {
+  padding-top: @size-base;
+}
+
+.cus-pr-10 {
+  padding-right: @size-base;
+}
+
+.cus-pb-10 {
+  padding-bottom: @size-base;
+}
+
+.cus-pl-10 {
+  padding-left: @size-base;
+}
+.cus-padding-15 {
+  padding: @size-large;
+}
+.cus-pt-15 {
+  padding-top: @size-large;
+}
+
+.cus-pr-15 {
+  padding-right: @size-large;
+}
+
+.cus-pb-15 {
+  padding-bottom: @size-large;
+}
+
+.cus-pl-15 {
+  padding-left: @size-large;
+}
+
+.cus-pr-pb-10 {
+  padding: 0 @size-base @size-base 0;
+}
+
+/*
+颜色类
+*/
+
+.cus-blue {
+  color: #2db7f5;
+}
+
+.cus-bg-white {
+  background: #fff;
+}
+
+// antd css 修改
+.ant-form-item-explain,
+.ant-form-item-explain .ant-form-item-explain-error {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  transition: none;
+}
+
+.ant-form-item {
+  margin-bottom: 6px !important;
+}
+.ant-form-item-control {
+  overflow: hidden;
+}
+
+.ant-form-item .ant-form-item-explain {
+  display: none !important;
+}
+
+.ant-tab-overflow-inherit {
+  overflow: inherit;
+}
