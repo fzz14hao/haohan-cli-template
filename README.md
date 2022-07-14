@@ -1,4 +1,4 @@
-# HH OMS 订单管理系统
+# HH 
 
 This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
 
@@ -73,8 +73,11 @@ https://umijs.org/
 
 
 ### 提示
-项目安装依赖的时候先把私有组件 “haohan”去掉 安装好依赖之后 再独立安装私有组件库
+
+ui组件 ：@haohan/ui
+工具函数库：@haohan/utils
+hooks: @haohan/hooks
 
 私有组件库安装命令
-> yarn add haohan --save --registry=http://10.9.0.5:4000/
-> npm i haohan --save --registry=http://10.9.0.5:4000/
+> yarn add xxx --save --registry=http://120.76.194.61:4000
+> npm i xxx --save --registry=http://120.76.194.61:4000
