@@ -12,6 +12,7 @@ import {
   CostSharingDelete,
   CostSharingGetListPage,
 } from '@/services/Fi/CostSharing';
+import { useMemo } from 'react';
 
 const CostExpense = () => {
   const { isLoading, total, runSync } = useAsync();
@@ -51,8 +52,6 @@ const CostExpense = () => {
     ).then((res) => {
       if (res) {
         addDataSource(res);
-      } else {
-        setDataSource([]);
       }
     });
   }
@@ -88,7 +87,7 @@ const CostExpense = () => {
     onDelete(value, { ids: [record.id] }, index, CostSharingDelete, removeIndex, getList);
   };
 
-  const column = getColumn({ onEdit, onDel, onCostExpense, onCancelExpense });
+  const column = useMemo(()=>getColumn({ onEdit, onDel, onCostExpense, onCancelExpense }),[]);
 
   return (
     <div>

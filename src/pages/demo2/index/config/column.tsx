@@ -5,7 +5,7 @@ import i18n from 'i18next';
 
 const getColumn = (props: any) => {
   const { onCostExpense, onCancelExpense } = props;
-
+  console.log(1)
   return [
     {
       id: 1,

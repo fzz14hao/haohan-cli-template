@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { HhKeepAlive, HhTable, HhTitleRow } from '@haohan/ui';
 import { useDataSource, useOnSearch, useAsync } from '@haohan/hooks';
 import { onDelete, objToFlat, dateToDatestr } from '@haohan/utils';
@@ -64,10 +64,10 @@ const DemoIndex = () => {
   }
 
   // 点击编辑
-  const onEdit = (value: any, record: any, index: number) => {
+  const onEdit =(value: any, record: any, index: number) => {
     setRowData(record);
     setVisible(true);
-  };
+  }
 
   // 点击新增
   const onAdd = () => {
@@ -81,7 +81,7 @@ const DemoIndex = () => {
     onDelete(value, { id: id }, index, ComponentDelete, removeIndex);
   };
 
-  const column = getColumn({ onEdit, onDel });
+  const column = useMemo(()=>getColumn({ onEdit, onDel }),[]);
 
   return (
     <div>
