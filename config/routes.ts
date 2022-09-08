@@ -24,7 +24,7 @@ export default [
         path: '/user/login',
         layout: false, //不使用 主布局页面，会隐藏导航菜单，头部状态栏
         name: 'login',
-        component: './User/Login',
+        component: './user/Login',
       },
       {
         path: '/user',
