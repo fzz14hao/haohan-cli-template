@@ -1,9 +1,8 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { HhKeepAlive, HhTable, HhTitleRow } from '@haohan/ui';
-import { useDataSource, useOnSearch, useAsync } from '@haohan/hooks';
-import { onDelete, objToFlat, dateToDatestr } from '@haohan/utils';
+import { useHhTable, useHhSearch } from '@haohan/hooks';
+import { objToFlat, dateToDatestr } from '@haohan/utils';
 import i18next from 'i18next';
-
 import { ComponentDelete } from '@/services/Mos/Component';
 import { ComponentDesignBaseGetPageListByParm } from '@/services/Mos/ComponentDesignBase';
 
@@ -12,36 +11,33 @@ import AddModal from './components/AddModal';
 import Search from './components/Search';
 
 const DemoIndex = () => {
-  const { isLoading, total, runSync } = useAsync();
   const {
     dataSource,
-    setDataSource,
-    addDataSource,
     removeIndex,
-    updatedIndex,
     pageIndex,
     setPageIndex,
     pageSize,
     onLoadMore,
     onLoadAll,
-  } = useDataSource<API.ComponentDto>([], total);
-  const [allSearchValue, setAllSearchValue] = useState<API.QueryParamDto>({});
+    isLoading,
+    total,
+    getTableData,
+    onTableDelete,
+  } = useHhTable<API.ComponentDto>({ initData: [] });
+
   const [visible, setVisible] = useState<boolean>(false);
   const [rowData, setRowData] = useState<API.ComponentDesignBaseDto>();
-  const { keyword, onSearch } = useOnSearch<string>(
-    () => {
-      getList();
-    },
+  const { keyword, searchData, setSearchData, onSearch } = useHhSearch<any>({
+    callback: getList,
     pageIndex,
     setPageIndex,
     pageSize,
     isLoading,
-    false,
-  );
+  });
 
   // 获取列表
   function getList() {
-    let newData = objToFlat(allSearchValue, ['createTime'], [], {
+    let newData = objToFlat(searchData, ['createTime'], [], {
       createTime: ['startTime', 'endTime'],
     });
 
@@ -50,24 +46,19 @@ const DemoIndex = () => {
       pageIndex,
       pageSize,
       keyword,
+      ...searchData,
       ...newData,
     };
-    runSync<API.ComponentDesignBaseDtoListApiResult, API.CompoQueryParamDto[]>(
+    getTableData<API.ComponentDesignBaseDtoListApiResult, API.CompoQueryParamDto[]>(
       ComponentDesignBaseGetPageListByParm(params),
-    ).then((res) => {
-      if (res) {
-        addDataSource(res);
-      } else {
-        setDataSource([]);
-      }
-    });
+    );
   }
 
   // 点击编辑
-  const onEdit =(value: any, record: any, index: number) => {
+  const onEdit = (value: any, record: any, index: number) => {
     setRowData(record);
     setVisible(true);
-  }
+  };
 
   // 点击新增
   const onAdd = () => {
@@ -78,10 +69,10 @@ const DemoIndex = () => {
   // 点击删除
   const onDel = (value: any, record: any, index: number) => {
     const { id } = record;
-    onDelete(value, { id: id }, index, ComponentDelete, removeIndex);
+    onTableDelete({ record: { id: id }, deleteFn: ComponentDelete, index, removeIndex });
   };
 
-  const column = useMemo(()=>getColumn({ onEdit, onDel }),[]);
+  const column = useMemo(() => getColumn({ onEdit, onDel }), []);
 
   return (
     <div>
@@ -90,7 +81,7 @@ const DemoIndex = () => {
       <Search
         onSearch={onSearch}
         keyword={keyword}
-        setAllSearchValue={setAllSearchValue}
+        setAllSearchValue={setSearchData}
         onAdd={onAdd}
       />
 
@@ -106,7 +97,14 @@ const DemoIndex = () => {
       />
 
       {visible && (
-        <AddModal rowData={rowData} setVisible={setVisible} onOk={getList} visible={visible} />
+        <AddModal
+          rowData={rowData}
+          setVisible={setVisible}
+          onOk={() => {
+            setPageIndex(1);
+          }}
+          visible={visible}
+        />
       )}
     </div>
   );

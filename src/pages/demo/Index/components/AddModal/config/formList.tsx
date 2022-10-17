@@ -7,7 +7,7 @@ import i18n from 'i18next';
 const prodProcessList = ['CUT', 'SEW', 'PCK', 'EMB'];
 
 const getFormList = (props?: any) => {
-  const { formInfo, setData } = props;
+  const { formData, setFieldsValue } = props;
 
   const data = [
     {
@@ -88,8 +88,8 @@ const getFormList = (props?: any) => {
       render: () => {
         return (
           <HhGroupSearch
-            set={setData}
-            data={formInfo}
+            set={setFieldsValue}
+            data={formData}
             nameKey="usageUnitName"
             codeKey="usageUnitCode"
             idKey="usageUnitId"
@@ -113,7 +113,7 @@ const getFormList = (props?: any) => {
       render: (value: any) => {
         return (
           <Select mode="multiple">
-            {formInfo?.matGroupList?.map((el: any) => {
+            {formData?.matGroupList?.map((el: any) => {
               return (
                 <Select.Option value={el.id}>
                   {' '}

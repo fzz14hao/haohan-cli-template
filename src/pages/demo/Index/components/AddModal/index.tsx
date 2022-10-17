@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
-import { Form, message } from 'antd';
+import { useEffect } from 'react';
 import { DraggableModal, HhForm } from '@haohan/ui';
 import getFormList from './config/formList';
 import i18next from 'i18next';
-import { useAsync, useValidateFields } from '@haohan/hooks';
+import { useHhForm } from '@haohan/hooks';
 import { ComponentDesignBaseAddOrUpdate } from '@/services/Mos/ComponentDesignBase';
 
 type AddModalProps = {
@@ -14,47 +13,36 @@ type AddModalProps = {
 };
 
 const AddModal = (props: AddModalProps) => {
-  const { runSync } = useAsync();
   const { rowData, onOk, visible, setVisible } = props;
-  const [formInfo, setFormInfo] = useState(rowData);
-  const [form] = Form.useForm();
 
-  const { runValidateFields } = useValidateFields();
-
-  //  设置data
-  const setData = (_data: any) => {
-    setFormInfo(_data);
-    form.setFieldsValue({ ..._data });
-  };
-  // 监听表单
-  const onValuesChange = (changedValues: any, allValues: any) => {
-    setData({ ...formInfo, ...allValues });
-  };
+  const { form, formData, submitForm, runValidateFields, onValuesChange, setFieldsValue } =
+    useHhForm<any>({
+      initFormData: rowData,
+    });
 
   const onSave = async () => {
     if (!(await runValidateFields(form))) return;
     const params = {
-      ...formInfo,
+      ...formData,
     };
-    runSync<API.ComponentDesignBaseDtoApiResult, API.ComponentDesignBaseDto>(
+    submitForm<API.ComponentDesignBaseDtoApiResult, API.ComponentDesignBaseDto>(
       ComponentDesignBaseAddOrUpdate(params),
+      { prohibit: false },
     ).then((res) => {
       if (res) {
-        const text = '保存成功';
-        message.success(i18next.t(text));
-        setVisible(false)
+        setVisible(false);
         onOk && onOk();
       }
     });
   };
 
   useEffect(() => {
-    setData(rowData);
+    setFieldsValue(rowData);
   }, [rowData]);
 
   const formList = getFormList({
-    formInfo,
-    setData,
+    formData,
+    setFieldsValue,
   });
 
   return (
