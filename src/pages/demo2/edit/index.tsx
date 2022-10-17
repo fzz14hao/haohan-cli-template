@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, Divider, Collapse, Form, message } from 'antd';
 import { history, useParams } from 'umi';
 import { HhTable, BackBar, HhForm, HhTitleRow, SearchArPeriod } from '@haohan/ui';
-import { useAsync, useGetById, useValidateFields, useDisableEdit } from '@haohan/hooks';
+import { useGetById, useHhForm, useHhRequest } from '@haohan/hooks';
 import i18next from 'i18next';
 
 import {
@@ -20,39 +20,32 @@ const { Panel } = Collapse;
 
 const CostExpenseEdit = () => {
   const params: { id: string } = useParams();
-  const { isLoading, runSync } = useAsync();
-  const [basicInfo, setBasicInfo] = useState<any>({});
-  const [isEdit, setIsEdit] = useDisableEdit(false);
+  const { isLoading, runRequest } = useHhRequest();
+
+  const {
+    form,
+    formData,
+    isDisableForm: isEdit,
+    setDisableForm: setIsEdit,
+    onValuesChange,
+    setFieldsValue,
+    getByDetails,
+    submitForm,
+    runValidateFields,
+  } = useHhForm<any>({
+    initFormData: {},
+  });
+
   const [visible, setVisible] = useState<boolean>(false);
   const [detailsData, setDetailsData] = useState<any[]>([]);
   const [visibleArPeriod, setVisibleArPeriod] = useState<boolean>(false);
-
-  const [form] = Form.useForm();
-  const { runValidateFields } = useValidateFields();
-
-  //  设置data
-  const setData = (data: any) => {
-    setBasicInfo(data);
-    form.setFieldsValue({ ...data });
-  };
-  // 监听表单
-  const onValuesChange = (changedValues: any, allValues: any) => {
-    console.log('监听表单', changedValues, allValues);
-    setData({ ...basicInfo, ...allValues });
-  };
 
   // 获取详情
   const getById = () => {
     const param: API.CostSharingGetByIdParams = {
       id: params.id,
     };
-    runSync<API.CostSharingDtoApiResult, API.CostSharingDto>(CostSharingGetById(param)).then(
-      (res) => {
-        if (res) {
-          setData(res);
-        }
-      },
-    );
+    getByDetails(CostSharingGetById(param));
   };
 
   const onSave = async () => {
@@ -60,9 +53,9 @@ const CostExpenseEdit = () => {
 
     const param: API.CostParamDto = {
       id: '0',
-      ...basicInfo,
+      ...formData,
     };
-    runSync<API.CostSharingDtoApiResult, API.CostSharingDto>(
+    submitForm<API.CostSharingDtoApiResult, API.CostSharingDto>(
       CostSharingSaveCostSharing(param),
     ).then((res) => {
       if (res) {
@@ -80,8 +73,8 @@ const CostExpenseEdit = () => {
   };
 
   const onCostExpense = () => {
-    runSync<API.BooleanApiResult, boolean>(
-      CostSharingCostExpense({ id: basicInfo?.id }, { showMsg: true }),
+    runRequest<API.BooleanApiResult, boolean>(
+      CostSharingCostExpense({ id: formData?.id }, { showMsg: true }),
     ).then((res) => {
       if (res) {
         message.success('分摊成功');
@@ -91,8 +84,8 @@ const CostExpenseEdit = () => {
   };
 
   const onCancelExpense = () => {
-    runSync<API.BooleanApiResult, boolean>(
-      CostSharingCancelCostExpense({ id: basicInfo?.id }, { showMsg: true }),
+    runRequest<API.BooleanApiResult, boolean>(
+      CostSharingCancelCostExpense({ id: formData?.id }, { showMsg: true }),
     ).then((res) => {
       if (res) {
         message.success('取消成功');
@@ -102,14 +95,17 @@ const CostExpenseEdit = () => {
   };
 
   const onEdit = (value: any, record: any) => {
-    runSync<API.CostSharProdOrderCostDetailDtoListApiResult, API.CostSharProdOrderCostDetailDto[]>(
-      CostSharingGetListByCostSharingDetail({ detailId: record?.id }, { showMsg: true }),
-    ).then((res) => {
-      if (res) {
-        setVisible(true);
-        setDetailsData(res);
-      }
-    });
+    runRequest<
+      API.CostSharProdOrderCostDetailDtoListApiResult,
+      API.CostSharProdOrderCostDetailDto[]
+    >(CostSharingGetListByCostSharingDetail({ detailId: record?.id }, { showMsg: true })).then(
+      (res) => {
+        if (res) {
+          setVisible(true);
+          setDetailsData(res);
+        }
+      },
+    );
   };
 
   const onSelectCallBack = (value: any, allValues: any) => {
@@ -119,18 +115,18 @@ const CostExpenseEdit = () => {
       periodId: id,
       financialDate,
     };
-    setData({ ...basicInfo, ...obj });
+    setFieldsValue({ ...formData, ...obj });
   };
 
   useGetById(() => {
     getById();
   });
 
-  const column = getColumn({ basicInfo, onEdit });
+  const column = getColumn({ basicInfo: formData, onEdit });
 
   const formList = getFormList({
-    basicInfo,
-    setData,
+    basicInfo: formData,
+    setData: setFieldsValue,
     isEdit,
     setVisibleArPeriod,
   });
@@ -146,19 +142,19 @@ const CostExpenseEdit = () => {
             <Button type="primary" onClick={() => setIsEdit(!isEdit)}>
               {i18next.t(isEdit ? '编辑' : '取消编辑')}
             </Button>
-            {basicInfo?.status === 1 && (
+            {formData?.status === 1 && (
               <Button type="primary" onClick={onCancelExpense} disabled={isEdit}>
                 {i18next.t('取消分摊')}
               </Button>
             )}
-            {basicInfo?.status === 0 && (
+            {formData?.status === 0 && (
               <Button type="primary" onClick={onCostExpense} disabled={isEdit}>
                 {i18next.t('分摊')}
               </Button>
             )}
 
             <Button
-              disabled={isEdit || basicInfo?.status === 1}
+              disabled={isEdit || formData?.status === 1}
               type="primary"
               onClick={() => {
                 onSave();
@@ -181,7 +177,7 @@ const CostExpenseEdit = () => {
       <HhTable
         tableProps={{ isLoading }}
         hasSet={true}
-        dataSource={basicInfo?.details || []}
+        dataSource={formData?.details || []}
         column={column}
       />
 
@@ -199,7 +195,7 @@ const CostExpenseEdit = () => {
           selectCallBack={onSelectCallBack}
           onIsModalShow={setVisibleArPeriod}
           otherParam={{
-            factoryId: basicInfo?.factoryId,
+            factoryId: formData?.factoryId,
           }}
         ></SearchArPeriod>
       )}
