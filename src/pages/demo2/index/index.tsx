@@ -1,7 +1,6 @@
 import { history } from 'umi';
 import { HhKeepAlive, HhTable, HhTitleRow, SearchBar } from '@haohan/ui';
-import { useDataSource, useOnSearch, useAsync } from '@haohan/hooks';
-import { onDelete } from '@haohan/utils';
+import { useAsync, useHhSearch, useHhTable } from '@haohan/hooks';
 
 import i18next from 'i18next';
 import getColumn from './config/column';
@@ -14,46 +13,43 @@ import {
 } from '@/services/Fi/CostSharing';
 import { useMemo } from 'react';
 
+
+
 const CostExpense = () => {
-  const { isLoading, total, runSync } = useAsync();
+  const { runSync } = useAsync();
 
   const {
     dataSource,
-    addDataSource,
-    setDataSource,
     removeIndex,
     pageIndex,
     setPageIndex,
     pageSize,
     onLoadMore,
     onLoadAll,
-  } = useDataSource<API.CostSharingDto>([], total);
+    isLoading,
+    total,
+    getTableData,
+    onTableDelete,
+  } = useHhTable<API.CostSharingDto>({ initData: [] });
 
-  const { keyword, onSearch } = useOnSearch<string>(
-    () => {
-      getList();
-    },
+  const { keyword, onSearch } = useHhSearch<any>({
+    callback: getList,
     pageIndex,
     setPageIndex,
     pageSize,
     isLoading,
-    false,
-  );
+  });
 
   function getList() {
     const params: API.CostExpenseCondition = {
       pageIndex,
       pageSize,
-      // keyword,
+      keyword,
     };
 
-    runSync<API.CostSharingDtoListApiResult, API.CostSharingDto[]>(
+    getTableData<API.CostSharingDtoListApiResult, API.CostSharingDto[]>(
       CostSharingGetListPage(params),
-    ).then((res) => {
-      if (res) {
-        addDataSource(res);
-      }
-    });
+    );
   }
 
   const onCostExpense = (id: string) => {
@@ -84,10 +80,14 @@ const CostExpense = () => {
 
   // 点击删除
   const onDel = (value: any, record: any, index: number) => {
-    onDelete(value, { ids: [record.id] }, index, CostSharingDelete, removeIndex, getList);
+    onTableDelete({
+      record: { ids: [record.id] },
+      deleteFn: CostSharingDelete,
+      index,
+    });
   };
 
-  const column = useMemo(()=>getColumn({ onEdit, onDel, onCostExpense, onCancelExpense }),[]);
+  const column = useMemo(() => getColumn({ onEdit, onDel, onCostExpense, onCancelExpense }), []);
 
   return (
     <div>

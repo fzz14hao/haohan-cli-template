@@ -18,7 +18,6 @@ import { CurrencyGetCurrenciesNoPermission } from '@/services/BasicInfo/Currency
 
 const getFormList = (props?: any) => {
   let { basicInfo, setData, isEdit, setVisibleArPeriod } = props;
-  isEdit = isEdit || basicInfo?.status === 1;
 
   const data = [
     {
