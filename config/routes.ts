@@ -19,11 +19,12 @@ export default [
     path: '/user',
     layout,
     hideInMenu: true, //隐藏菜单项
+    name:'用户',
     routes: [
       {
         path: '/user/login',
         layout: false, //不使用 主布局页面，会隐藏导航菜单，头部状态栏
-        name: 'login',
+        name: '登录',
         component: './user/Login',
       },
       {
@@ -32,14 +33,14 @@ export default [
         redirect: '/user/login',
       },
       {
-        name: 'register.result',
+        name: '注册结果',
         layout,
         icon: 'smile',
         path: '/user/register-result',
         component: './user/register-result',
       },
       {
-        name: 'register',
+        name: '注册',
         layout,
         icon: 'smile',
         path: '/user/register',
