@@ -7,9 +7,7 @@ import Footer from '@/components/Footer';
 import { AccountGetUserProfile } from '@/services/Users/Account';
 import { setLocale } from 'umi';
 import i18next from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import { initReactI18next } from 'react-i18next';
-import { storage, getLang, errorHandler, microActions } from '@haohan/utils';
+import { storage, getLang, errorHandler, microActions ,responseInterceptors ,hhI18next,pageTitleRender,initI18next} from '@haohan/utils';
 
 import 'antd/dist/antd.less';
 import '@/css/common.less';
@@ -19,6 +17,9 @@ import '@/css/globalSmall.less';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
+
+// 添加翻译入口
+hhI18next.renderNode()
 
 const authHeaderInterceptor = (url: string, options: RequestConfig) => {
   const tokenstr = storage.getLocal('token') || '';
@@ -89,39 +90,11 @@ export async function getInitialState(): Promise<{
     return undefined;
   };
 
-  // 注册国际化
-  const { zhCN, zhTW, enUS, viVN } = await getLang();
-  const umiLocale = localStorage.getItem('umi_locale');
-  i18next
-    .use(LanguageDetector) // 嗅探当前浏览器语言
-    .use(initReactI18next) // init i18next
-    .init({
-      // 引入资源文件
-      resources: {
-        'en-US': {
-          translation: enUS,
-        },
-        'zh-CN': {
-          translation: zhCN,
-        },
-        'zh-TW': {
-          translation: zhTW,
-        },
-        'vi-VN': {
-          translation: viVN,
-        },
-      },
-      // 选择默认语言，选择内容为上述配置中的key，即en/zh
-      fallbackLng: umiLocale || 'zh-CN',
-      debug: false,
-      interpolation: {
-        escapeValue: false, // not needed for react as it escapes by default
-      },
-    });
-
-  if (umiLocale) {
-    i18next.changeLanguage(umiLocale);
-  }
+  try {
+    // 注册国际化
+    const { zhCN, zhTW, enUS, viVN ,kmKH} = await getLang();
+    initI18next(enUS, zhCN, zhTW, viVN,kmKH);
+  } catch {}
 
   // 如果是登录页面，不执行
   if (history.location.pathname !== loginPath) {
@@ -179,6 +152,7 @@ export async function getInitialState(): Promise<{
 export const request: RequestConfig = {
   errorHandler: errorHandler,
   requestInterceptors: [authHeaderInterceptor],
+  responseInterceptors:[responseInterceptors]
 };
 
 console.log(process.env);
@@ -199,6 +173,10 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     waterMarkProps: {
       content: initialState?.currentUser?.name,
     },
+    pageTitleRender(props, defaultPageTitle?, info?) {
+      // TO DO
+      return pageTitleRender(props, defaultPageTitle, info,'xxxui')
+     },
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;

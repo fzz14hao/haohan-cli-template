@@ -45,6 +45,8 @@ const AddModal = (props: AddModalProps) => {
     setFieldsValue,
   });
 
+  console.log(formData)
+
   return (
     <DraggableModal
       title={rowData.id ? i18next.t('编辑') : i18next.t('新建')}
