@@ -3,7 +3,7 @@ import { Button, Divider, Collapse, Form, message } from 'antd';
 import { history, useParams } from 'umi';
 import { HhTable, BackBar, HhForm, HhTitleRow, SearchArPeriod } from '@haohan/ui';
 import { useGetById, useHhForm, useHhRequest } from '@haohan/hooks';
-import i18next from 'i18next';
+import i18next from '@haohan/utils/es/hhI18next';
 
 import {
   CostSharingCancelCostExpense,

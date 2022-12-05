@@ -9,7 +9,7 @@ import {
   SearchCostCenter,
   SearchCostItem,
 } from '@haohan/ui';
-import i18n from 'i18next';
+import i18next from '@haohan/utils/es/hhI18next';
 import { FactoryGetPageListByParmNoPermission } from '@/services/BasicInfo/Factory';
 import { CostCenterGetListPage } from '@/services/Fi/CostCenter';
 import { DepartmentGetPageListByParm } from '@/services/BasicInfo/Department';

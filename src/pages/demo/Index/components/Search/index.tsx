@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import i18next from 'i18next';
+import i18next from '@haohan/utils/es/hhI18next';
 import { Button } from 'antd';
 import { SearchBar } from '@haohan/ui';
 

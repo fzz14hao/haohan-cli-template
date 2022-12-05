@@ -1,6 +1,6 @@
 import {DatePicker} from 'antd'
 import { HhGroupSearch, SearchFactory } from '@haohan/ui';
-import i18next from 'i18next';
+import i18next from '@haohan/utils/es/hhI18next';
 import { FactoryGetPageListByParmNoPermission } from '@/services/BasicInfo/Factory';
 
 const getOtherData = (props?: any) => {

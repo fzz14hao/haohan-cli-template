@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { DraggableModal, HhForm } from '@haohan/ui';
 import getFormList from './config/formList';
-import i18next from 'i18next';
+import i18next from '@haohan/utils/es/hhI18next';
 import { useHhForm } from '@haohan/hooks';
 import { ComponentDesignBaseAddOrUpdate } from '@/services/Mos/ComponentDesignBase';
 

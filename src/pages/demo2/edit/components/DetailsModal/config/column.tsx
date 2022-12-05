@@ -1,6 +1,6 @@
 import { amount, renderDate } from '@haohan/utils';
 import { Button, Tag } from 'antd';
-import i18n from 'i18next';
+import i18next from '@haohan/utils/es/hhI18next';
 
 const getColumn = (props: any) => {
   return [

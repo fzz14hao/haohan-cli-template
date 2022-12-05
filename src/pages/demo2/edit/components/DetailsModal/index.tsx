@@ -1,6 +1,6 @@
 import { DraggableModal, HhTable } from '@haohan/ui';
 
-import i18next from 'i18next';
+import i18next from '@haohan/utils/es/hhI18next';
 
 import getColumn from './config/column';
 

@@ -1,8 +1,8 @@
 import { history } from 'umi';
 import { HhKeepAlive, HhTable, HhTitleRow, SearchBar } from '@haohan/ui';
-import { useAsync, useHhSearch, useHhTable } from '@haohan/hooks';
+import { useHhRequest, useHhSearch, useHhTable } from '@haohan/hooks';
 
-import i18next from 'i18next';
+import i18next from '@haohan/utils/es/hhI18next';
 import getColumn from './config/column';
 import { Button, message } from 'antd';
 import {
@@ -13,10 +13,8 @@ import {
 } from '@/services/Fi/CostSharing';
 import { useMemo } from 'react';
 
-
-
 const CostExpense = () => {
-  const { runSync } = useAsync();
+  const { runRequest } = useHhRequest();
 
   const {
     dataSource,
@@ -53,17 +51,17 @@ const CostExpense = () => {
   }
 
   const onCostExpense = (id: string) => {
-    runSync<API.BooleanApiResult, boolean>(CostSharingCostExpense({ id }, { showMsg: true })).then(
-      (res) => {
-        if (res) {
-          message.success('分摊成功');
-          getList();
-        }
-      },
-    );
+    runRequest<API.BooleanApiResult, boolean>(
+      CostSharingCostExpense({ id }, { showMsg: true }),
+    ).then((res) => {
+      if (res) {
+        message.success('分摊成功');
+        getList();
+      }
+    });
   };
   const onCancelExpense = (id: string) => {
-    runSync<API.BooleanApiResult, boolean>(
+    runRequest<API.BooleanApiResult, boolean>(
       CostSharingCancelCostExpense({ id }, { showMsg: true }),
     ).then((res) => {
       if (res) {
@@ -91,9 +89,9 @@ const CostExpense = () => {
 
   return (
     <div>
-      <HhTitleRow autoTitle title={i18next.t('成本分摊')} />
+      <HhTitleRow autoTitle title={'成本分摊'} />
       <SearchBar
-        placeholder={i18next.t('请输入')}
+        placeholder={i18next.tt('请输入')}
         onSearch={onSearch}
         value={keyword}
         renderRight={

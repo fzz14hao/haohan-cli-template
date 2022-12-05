@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { HhKeepAlive, HhTable, HhTitleRow } from '@haohan/ui';
 import { useHhTable, useHhSearch } from '@haohan/hooks';
 import { objToFlat, dateToDatestr } from '@haohan/utils';
-import i18next from 'i18next';
+import i18next from '@haohan/utils/es/hhI18next';
 import { ComponentDelete } from '@/services/Mos/Component';
 import { ComponentDesignBaseGetPageListByParm } from '@/services/Mos/ComponentDesignBase';
 

@@ -1,8 +1,8 @@
 import { UnitGetPageListByParm } from '@/services/BasicInfo/Unit';
 import { Input, Select } from 'antd';
 import { SerachUnit, HhGroupSearch } from '@haohan/ui';
-import i18next from 'i18next';
-import i18n from 'i18next';
+import i18n from '@haohan/utils/es/hhI18next';
+
 
 const prodProcessList = ['CUT', 'SEW', 'PCK', 'EMB'];
 
@@ -55,9 +55,9 @@ const getFormList = (props?: any) => {
     {
       key: 6,
       name: 'prodProcess',
-      label: i18next.t('使用部门'),
+      label: i18n.t('使用部门'),
       props: {
-        rules: [{ required: true, message: i18next.t('请选择使用部门') }],
+        rules: [{ required: true, message: i18n.t('请选择使用部门') }],
       },
       render: (value: any) => {
         return (
@@ -76,7 +76,7 @@ const getFormList = (props?: any) => {
     {
       key: 7,
       name: 'useage',
-      label: i18next.t('用量范围'),
+      label: i18n.t('用量范围'),
       render: () => {
         return <Input />;
       },
@@ -84,7 +84,7 @@ const getFormList = (props?: any) => {
     {
       key: 8,
       name: 'unit',
-      label: i18next.t('用量单位'),
+      label: i18n.t('用量单位'),
       render: () => {
         return (
           <HhGroupSearch
@@ -109,7 +109,7 @@ const getFormList = (props?: any) => {
     {
       key: 10,
       name: 'componentMatDetails',
-      label: i18next.t('物料小类'),
+      label: i18n.t('物料小类'),
       render: (value: any) => {
         return (
           <Select mode="multiple">
