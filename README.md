@@ -66,7 +66,7 @@ https://ant.design/index-cn
 https://ali-react-table.js.org/
 
 ### 内部组件库
-http://10.9.0.11:8005/
+http://10.9.0.11:6500/compui
 
 ### 脚手架
 https://umijs.org/

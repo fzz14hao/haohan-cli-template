@@ -1,7 +1,7 @@
 import { HhStatusTag } from '@haohan/ui';
 import { renderDate, renderCodeAndName, amount } from '@haohan/utils';
 import { Button } from 'antd';
-import i18next from '@haohan/utils/es/hhI18next';
+import i18n from '@haohan/utils/es/hhI18next';
 
 const getColumn = (props: any) => {
   const { onCostExpense, onCancelExpense } = props;
