@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import i18next from '@haohan/utils/es/hhI18next';
 import { Button } from 'antd';
-import { SearchBar } from '@haohan/ui';
+import { HhSearchBar } from '@haohan/ui';
 
 import getOtherData from '../../config/otherData';
 
@@ -35,7 +35,7 @@ const Search: React.FC<SearchProps> = (props) => {
 
   return (
     <>
-      <SearchBar
+      <HhSearchBar
         onSearch={onSearch}
         value={keyword}
         placeholder="请输入部位编号/部位名称/款型编号/款型名称"

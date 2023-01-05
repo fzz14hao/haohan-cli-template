@@ -1,5 +1,5 @@
 import { history } from 'umi';
-import { HhKeepAlive, HhTable, HhTitleRow, SearchBar } from '@haohan/ui';
+import { HhKeepAlive, HhTable, HhTitleRow, HhSearchBar } from '@haohan/ui';
 import { useHhRequest, useHhSearch, useHhTable } from '@haohan/hooks';
 
 import i18next from '@haohan/utils/es/hhI18next';
@@ -90,7 +90,7 @@ const CostExpense = () => {
   return (
     <div>
       <HhTitleRow autoTitle title={'成本分摊'} />
-      <SearchBar
+      <HhSearchBar
         placeholder={i18next.tt('请输入')}
         onSearch={onSearch}
         value={keyword}
