@@ -23,6 +23,7 @@ const DemoIndex = () => {
     total,
     getTableData,
     onTableDelete,
+    startRetrieveData
   } = useHhTable<API.ComponentDto>({ initData: [] });
 
   const [visible, setVisible] = useState<boolean>(false);
@@ -76,7 +77,7 @@ const DemoIndex = () => {
 
   return (
     <div>
-      <HhTitleRow autoTitle title={i18next.t('部位定义')} />
+      <HhTitleRow autoTitle title='部位定义' />
 
       <Search
         onSearch={onSearch}
@@ -100,9 +101,7 @@ const DemoIndex = () => {
         <AddModal
           rowData={rowData}
           setVisible={setVisible}
-          onOk={() => {
-            setPageIndex(1);
-          }}
+          onOk={startRetrieveData}
           visible={visible}
         />
       )}

@@ -63,22 +63,22 @@ const getColumn = (props: any) => {
             status={value}
             configData={[
               {
-                text: i18n.t('CUT'),
+                text: i18n.tt('CUT'),
                 color: 'blue',
                 statusCode: 0,
               },
               {
-                text: i18n.t('SEW'),
+                text: i18n.tt('SEW'),
                 color: 'red',
                 statusCode: 1,
               },
               {
-                text: i18n.t('PCK'),
+                text: i18n.tt('PCK'),
                 color: 'green',
                 statusCode: 2,
               },
               {
-                text: i18n.t('EMB'),
+                text: i18n.tt('EMB'),
                 color: 'yellow',
                 statusCode: 3,
               },
@@ -93,7 +93,6 @@ const getColumn = (props: any) => {
       name: i18n.t('创建时间'),
       width: 100,
       features: { sortable: true },
-      render: renderDate,
     },
     {
       id: 6.5,
@@ -108,7 +107,6 @@ const getColumn = (props: any) => {
       name: i18n.t('修改时间'),
       width: 100,
       features: { sortable: true },
-      render: renderDate,
     },
     {
       id: 8,

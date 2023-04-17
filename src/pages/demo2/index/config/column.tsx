@@ -49,12 +49,12 @@ const getColumn = (props: any) => {
             status={value}
             configData={[
               {
-                text: i18n.t('是'),
+                text: i18n.tt('是'),
                 color: 'blue',
                 statusCode: 1,
               },
               {
-                text: i18n.t('否'),
+                text: i18n.tt('否'),
                 color: 'red',
                 statusCode: 0,
               },
@@ -120,7 +120,6 @@ const getColumn = (props: any) => {
       name: i18n.t('创建时间'),
       width: 100,
       features: { sortable: true },
-      render: renderDate,
     },
     {
       id: 14,
@@ -135,7 +134,6 @@ const getColumn = (props: any) => {
       name: i18n.t('修改时间'),
       width: 100,
       features: { sortable: true },
-      render: renderDate,
     },
     {
       id: 16,
