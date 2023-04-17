@@ -70,7 +70,7 @@ const DemoIndex = () => {
   // 点击删除
   const onDel = (value: any, record: any, index: number) => {
     const { id } = record;
-    onTableDelete({ record: { id: id }, deleteFn: ComponentDelete, index, removeIndex });
+    onTableDelete({ record: { id: id }, deleteFn: ComponentDelete, index });
   };
 
   const column = useMemo(() => getColumn({ onEdit, onDel }), []);
