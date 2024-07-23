@@ -60,34 +60,34 @@ export default defineConfig({
   // Fast Refresh 热更新
   fastRefresh: {},
   openAPI: [
-    {
-      //erp user api 文档
-      requestLibPath: "import { request } from 'umi'",
-      schemaPath: 'http://10.9.0.11:5010/user/swagger/0.8.1.00/swagger.json',
-      mock: false,
-      projectName: 'Users',
-    },
-    {
-      //BasicInfo
-      requestLibPath: "import { request } from 'umi'",
-      schemaPath: 'http://10.9.0.11:5030/basicinfo/swagger/0.8.1.00/swagger.json',
-      mock: false,
-      projectName: 'Basicinfo',
-    },
-    {
-      //mos
-      requestLibPath: "import { request } from 'umi'",
-      schemaPath: 'http://10.9.0.11:5046/mos/swagger/0.8.1.00/swagger.json',
-      mock: false,
-      projectName: 'Mos',
-    },
-    {
-      //Fi
-      requestLibPath: "import { request } from 'umi'",
-      schemaPath: 'http://10.9.0.11:5059/fi/swagger/1.0.0.00/swagger.json',
-      mock: false,
-      projectName: 'Fi',
-    },
+    // {
+    //   //erp user api 文档
+    //   requestLibPath: "import { request } from 'umi'",
+    //   schemaPath: 'http://10.9.0.15:5010/user/swagger/0.8.1.00/swagger.json',
+    //   mock: false,
+    //   projectName: 'Users',
+    // },
+    // {
+    //   //BasicInfo
+    //   requestLibPath: "import { request } from 'umi'",
+    //   schemaPath: 'http://10.9.0.15:5030/basicinfo/swagger/0.8.1.00/swagger.json',
+    //   mock: false,
+    //   projectName: 'Basicinfo',
+    // },
+    // {
+    //   //mos
+    //   requestLibPath: "import { request } from 'umi'",
+    //   schemaPath: 'http://10.9.0.15:5046/mos/swagger/0.8.1.00/swagger.json',
+    //   mock: false,
+    //   projectName: 'Mos',
+    // },
+    // {
+    //   //Fi
+    //   requestLibPath: "import { request } from 'umi'",
+    //   schemaPath: 'http://10.9.0.15:5059/fi/swagger/1.0.0.00/swagger.json',
+    //   mock: false,
+    //   projectName: 'Fi',
+    // },
   ],
 
   nodeModulesTransform: {

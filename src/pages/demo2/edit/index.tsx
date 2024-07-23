@@ -1,13 +1,10 @@
 import { useState } from 'react';
-import { Button, Divider, Collapse, Form, message } from 'antd';
+import { Button, Collapse, Form, message, Space, Tabs } from 'antd';
 import { history, useParams } from 'umi';
-import { HhTable, BackBar, HhForm, HhTitleRow, SearchArPeriod } from '@haohan/ui';
+import { HhTable, BackBar, HhForm, HhTitleRow } from '@haohan/ui';
 import { useGetById, useHhForm, useHhRequest } from '@haohan/hooks';
 import i18next from '@haohan/utils/es/hhI18next';
-
 import {
-  CostSharingCancelCostExpense,
-  CostSharingCostExpense,
   CostSharingGetById,
   CostSharingGetListByCostSharingDetail,
   CostSharingSaveCostSharing,
@@ -16,21 +13,20 @@ import DetailsModal from './components/DetailsModal';
 import getFormList from './config/formList';
 import getColumn from './config/column';
 
-const { Panel } = Collapse;
-
-const CostExpenseEdit = () => {
+const Edit = () => {
   const params: { id: string } = useParams();
   const { isLoading, runRequest } = useHhRequest();
 
   const {
     form,
     formData,
-    isDisableForm: isEdit,
-    setDisableForm: setIsEdit,
+    isDisableForm,
+    setDisableForm,
     onValuesChange,
     setFieldsValue,
     getByDetails,
     submitForm,
+    isLoading: isLoadingForm,
     runValidateFields,
   } = useHhForm<any>({
     initFormData: {},
@@ -38,7 +34,7 @@ const CostExpenseEdit = () => {
 
   const [visible, setVisible] = useState<boolean>(false);
   const [detailsData, setDetailsData] = useState<any[]>([]);
-  const [visibleArPeriod, setVisibleArPeriod] = useState<boolean>(false);
+  const [rowData, setRowData] = useState<any>({});
 
   // 获取详情
   const getById = () => {
@@ -72,63 +68,26 @@ const CostExpenseEdit = () => {
     });
   };
 
-  const onCostExpense = () => {
-    runRequest<API.BooleanApiResult, boolean>(
-      CostSharingCostExpense({ id: formData?.id }, { showMsg: true }),
-    ).then((res) => {
-      if (res) {
-        message.success('分摊成功');
-        getById();
-      }
-    });
-  };
-
-  const onCancelExpense = () => {
-    runRequest<API.BooleanApiResult, boolean>(
-      CostSharingCancelCostExpense({ id: formData?.id }, { showMsg: true }),
-    ).then((res) => {
-      if (res) {
-        message.success('取消成功');
-        getById();
-      }
-    });
-  };
-
   const onEdit = (value: any, record: any) => {
-    runRequest<
-      API.CostSharProdOrderCostDetailDtoListApiResult,
-      API.CostSharProdOrderCostDetailDto[]
-    >(CostSharingGetListByCostSharingDetail({ detailId: record?.id }, { showMsg: true })).then(
-      (res) => {
-        if (res) {
-          setVisible(true);
-          setDetailsData(res);
-        }
-      },
-    );
+    setRowData(record);
+    setVisible(true);
   };
 
-  const onSelectCallBack = (value: any, allValues: any) => {
-    const { financialDate, id } = allValues;
-
-    const obj = {
-      periodId: id,
-      financialDate,
-    };
-    setFieldsValue({ ...formData, ...obj });
+  const onAddItems = () => {
+    setRowData({});
+    setVisible(true);
   };
 
   useGetById(() => {
     getById();
   });
 
-  const column = getColumn({ basicInfo: formData, onEdit });
+  const column = getColumn({ formData, onEdit ,isDisableForm});
 
   const formList = getFormList({
-    basicInfo: formData,
-    setData: setFieldsValue,
-    isEdit,
-    setVisibleArPeriod,
+    formData,
+    setFieldsValue,
+    isDisableForm,
   });
 
   return (
@@ -139,22 +98,13 @@ const CostExpenseEdit = () => {
         title={params.id != '0' ? i18next.t('编辑') : i18next.t('新建')}
         renderRight={
           <>
-            <Button type="primary" onClick={() => setIsEdit(!isEdit)}>
-              {i18next.t(isEdit ? '编辑' : '取消编辑')}
+            <Button type="primary" onClick={() => setDisableForm(!isDisableForm)}>
+              {i18next.t(isDisableForm ? '编辑' : '取消编辑')}
             </Button>
-            {formData?.status === 1 && (
-              <Button type="primary" onClick={onCancelExpense} disabled={isEdit}>
-                {i18next.t('取消分摊')}
-              </Button>
-            )}
-            {formData?.status === 0 && (
-              <Button type="primary" onClick={onCostExpense} disabled={isEdit}>
-                {i18next.t('分摊')}
-              </Button>
-            )}
 
             <Button
-              disabled={isEdit || formData?.status === 1}
+              disabled={isDisableForm}
+              loading={isLoading || isLoadingForm}
               type="primary"
               onClick={() => {
                 onSave();
@@ -167,40 +117,37 @@ const CostExpenseEdit = () => {
       />
 
       <Collapse defaultActiveKey={['1']}>
-        <Panel header={i18next.t('基本信息')} key="1">
+        <Collapse.Panel header={i18next.t('基本信息')} key="1">
           <HhForm formProps={{ form, onValuesChange }} hasSet={true} formData={formList} />
-        </Panel>
+        </Collapse.Panel>
       </Collapse>
 
-      <Divider />
-
-      <HhTable
-        tableProps={{ isLoading }}
-        hasSet={true}
-        dataSource={formData?.details || []}
-        column={column}
-      />
+      <Tabs>
+        <Tabs.TabPane tab={i18next.t('明细')} key="1">
+          <Space className="cus-mb-10">
+            <Button type="primary" onClick={onAddItems} disabled={isDisableForm}>
+              {i18next.t('添加')}
+            </Button>
+          </Space>
+          <HhTable
+            tableProps={{ isLoading: isLoading || isLoadingForm }}
+            hasSet={true}
+            dataSource={formData?.details || []}
+            column={column}
+          />
+        </Tabs.TabPane>
+      </Tabs>
 
       {visible && (
         <DetailsModal
           visible={visible}
           setVisible={setVisible}
-          data={detailsData}
+          rowData={rowData}
           onOk={() => setVisible(false)}
         ></DetailsModal>
-      )}
-      {visibleArPeriod && (
-        <SearchArPeriod
-          visible={visibleArPeriod}
-          selectCallBack={onSelectCallBack}
-          onIsModalShow={setVisibleArPeriod}
-          otherParam={{
-            factoryId: formData?.factoryId,
-          }}
-        ></SearchArPeriod>
       )}
     </div>
   );
 };
 
-export default CostExpenseEdit;
+export default Edit;

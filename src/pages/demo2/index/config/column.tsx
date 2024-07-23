@@ -1,15 +1,13 @@
 import { HhStatusTag } from '@haohan/ui';
-import { renderDate, renderCodeAndName, amount } from '@haohan/utils';
+import { renderCodeAndName, amount } from '@haohan/utils';
 import { Button } from 'antd';
-import i18n from '@haohan/utils/es/hhI18next';
+import i18next from '@haohan/utils/es/hhI18next';
 
 const getColumn = (props: any) => {
-  const { onCostExpense, onCancelExpense } = props;
-  console.log(1)
   return [
     {
       id: 1,
-      name: i18n.t('序号'),
+      name: i18next.t('序号'),
       width: 60,
       lock: true,
       getValue(_: any, rowIndex: number) {
@@ -17,31 +15,25 @@ const getColumn = (props: any) => {
       },
     },
     {
-      id: 3,
+      id: 2,
       code: 'factoryCode',
-      name: i18n.t('工厂编码'),
+      name: i18next.t('工厂编码'),
       width: 100,
       features: { sortable: true },
     },
+    {
+      id: 3,
+      code: 'factoryName',
+      name: i18next.t('工厂名称'),
+      width: 100,
+      features: { sortable: true },
+    },
+
     {
       id: 4,
-      code: 'factoryName',
-      name: i18n.t('工厂名称'),
-      width: 100,
-      features: { sortable: true },
-    },
-    {
-      id: 5,
-      code: 'financialDate',
-      name: i18n.t('账期'),
-      width: 100,
-      features: { sortable: true },
-    },
-    {
-      id: 6,
       code: 'status',
       width: 100,
-      name: i18n.t('是否分摊'),
+      name: i18next.t('是否分摊'),
       features: { sortable: true },
       render: (value: any) => {
         return (
@@ -49,12 +41,12 @@ const getColumn = (props: any) => {
             status={value}
             configData={[
               {
-                text: i18n.tt('是'),
+                text: i18next.tt('是'),
                 color: 'blue',
                 statusCode: 1,
               },
               {
-                text: i18n.tt('否'),
+                text: i18next.tt('否'),
                 color: 'red',
                 statusCode: 0,
               },
@@ -63,117 +55,75 @@ const getColumn = (props: any) => {
         );
       },
     },
+
     {
-      id: 7,
-      code: 'costCenterCode',
-      width: 100,
-      name: i18n.t('成本中心'),
-      features: { sortable: true },
-    },
-    {
-      id: 8,
-      code: 'costCenterName',
-      name: i18n.t('成本中心说明'),
-      width: 130,
-      features: { sortable: true },
-    },
-    {
-      id: 9,
-      code: 'currencyName',
-      name: i18n.t('货币'),
-      width: 100,
-      features: { sortable: true },
-      render: (value: any, record: any) =>
-        renderCodeAndName(record, { code: 'currencyCode', name: 'currencyName' }),
-    },
-    {
-      id: 10,
+      id: 5,
       code: 'extCost',
-      name: i18n.t('成本金额'),
+      name: i18next.t('成本金额'),
       width: 100,
       align: 'right',
       features: { sortable: true },
-      render:amount
+      render: amount,
     },
 
     {
-      id: 11,
-      code: 'costItemCode',
-      name: i18n.t('成本代码'),
-      width: 100,
-      features: { sortable: true },
-      render: (value: any, record: any) =>
-        renderCodeAndName(record, { code: 'costItemCode', name: 'costItemName' }),
-    },
-    {
-      id: 12,
+      id: 6,
       code: 'departmentCode',
-      name: i18n.t('部门'),
+      name: i18next.t('部门'),
       width: 100,
       features: { sortable: true },
       render: (value: any, record: any) =>
         renderCodeAndName(record, { code: 'departmentCode', name: 'departmentName' }),
     },
     {
-      id: 13,
+      id: 7,
       code: 'timeCreated',
-      name: i18n.t('创建时间'),
+      name: i18next.t('创建时间'),
       width: 100,
       features: { sortable: true },
     },
     {
-      id: 14,
+      id: 8,
       code: 'userIdCreated',
-      name: i18n.t('创建人'),
+      name: i18next.t('创建人'),
       width: 100,
       features: { sortable: true },
     },
     {
-      id: 15,
+      id: 9,
       code: 'timeLastMod',
-      name: i18n.t('修改时间'),
+      name: i18next.t('修改时间'),
       width: 100,
       features: { sortable: true },
     },
     {
-      id: 16,
+      id: 10,
       code: 'userIdLastMod',
-      name: i18n.t('修改人'),
+      name: i18next.t('修改人'),
       width: 100,
       features: { sortable: true },
     },
 
     {
-      id: 24,
+      id: 100,
       code: 'operate',
-      name: i18n.t('操作'),
+      name: i18next.t('操作'),
       lock: true,
-      width: 180,
+      width: 160,
       isOperate: true,
       render: (value: any, record: any, rowIndex: number) => {
         return (
-          <div>
+          <div style={{ textAlign: 'center' }}>
             <Button size="small" type="link" onClick={() => props.onEdit(value, record, rowIndex)}>
-              {i18n.t('详情')}
+              {i18next.t('详情')}
             </Button>
-
-            {record.status === 1 && (
-              <Button size="small" type="link" onClick={() => onCancelExpense(record.id)}>
-                {i18n.t('取消分摊')}
-              </Button>
-            )}
-            {record.status === 0 && (
-              <Button size="small" type="link" onClick={() => onCostExpense(record.id)}>
-                {i18n.t('分摊')}
-              </Button>
-            )}
             <Button
               className="cus-ml-5"
               size="small"
               type="link"
               onClick={() => props.onDel(value, record, rowIndex)}
             >
-              {i18n.t('删除')}
+              {i18next.t('删除')}
             </Button>
           </div>
         );

@@ -6,15 +6,16 @@ import { HhSearchBar } from '@haohan/ui';
 import getOtherData from '../../config/otherData';
 import moment from 'moment';
 
-type SearchProps = {
+type HHSearchBarProps = {
   keyword: string | undefined;
   onSearch: (obj: any) => void;
   setAllSearchValue?: (obj: any) => void;
   onAdd?: () => void;
+  [key: string]: any;
 };
 
-const Search: React.FC<SearchProps> = (props) => {
-  const { keyword, onSearch, setAllSearchValue, onAdd } = props;
+const Search: React.FC<HHSearchBarProps> = (props) => {
+  const { keyword, onSearch, setAllSearchValue, onAdd, isLoading } = props;
 
   const [searchValue, setSearchValue] = useState<any>({});
 
@@ -39,26 +40,21 @@ const Search: React.FC<SearchProps> = (props) => {
       <HhSearchBar
         onSearch={onSearch}
         value={keyword}
-        placeholder="请输入部位编号/部位名称/款型编号/款型名称"
+        placeholder="请输入搜索内容"
         otherData={otherData}
         allKeyWorld={searchValue}
         onSearchValueChange={onSearchValueChange}
         formatValue={{
           createTime: {
             set: (val: moment.MomentInput[]) => {
-              return [
-                moment(val[0]).format('YYYY/MM/DD'),
-                moment(val[1]).format('YYYY/MM/DD'),
-              ];
+              return [moment(val[0]).format('YYYY/MM/DD'), moment(val[1]).format('YYYY/MM/DD')];
             },
             get: (val: moment.MomentInput[]) => {
-              return [
-                moment(val[0], 'YYYY/MM/DD'),
-                moment(val[1], 'YYYY/MM/DD'),
-              ];
+              return [moment(val[0], 'YYYY/MM/DD'), moment(val[1], 'YYYY/MM/DD')];
             },
           },
         }}
+        isLoading={isLoading}
         renderRight={
           <div>
             <Button type="primary" onClick={onAdd}>

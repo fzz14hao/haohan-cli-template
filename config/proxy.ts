@@ -59,6 +59,11 @@ export default {
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
+    '/bscapi/api': {
+      target: dev,
+      changeOrigin: true,
+      pathRewrite: { '^': '' },
+    },
 
   },
   test: {

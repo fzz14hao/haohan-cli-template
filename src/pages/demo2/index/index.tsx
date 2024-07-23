@@ -1,36 +1,31 @@
 import { history } from 'umi';
-import { HhKeepAlive, HhTable, HhTitleRow, HhSearchBar } from '@haohan/ui';
+import { HhKeepAlive, HhTable, HhTitleRow } from '@haohan/ui';
 import { useHhRequest, useHhSearch, useHhTable } from '@haohan/hooks';
-
 import i18next from '@haohan/utils/es/hhI18next';
 import getColumn from './config/column';
-import { Button, message } from 'antd';
-import {
-  CostSharingCancelCostExpense,
-  CostSharingCostExpense,
-  CostSharingDelete,
-  CostSharingGetListPage,
-} from '@/services/Fi/CostSharing';
+import { CostSharingDelete, CostSharingGetListPage } from '@/services/Fi/CostSharing';
 import { useMemo } from 'react';
+import Search from './components/Search';
 
-const CostExpense = () => {
-  const { runRequest } = useHhRequest();
+const Index = () => {
+  const { runRequest, isLoading } = useHhRequest();
 
   const {
     dataSource,
+    addDataSource,
     removeIndex,
     pageIndex,
     setPageIndex,
     pageSize,
     onLoadMore,
     onLoadAll,
-    isLoading,
+    isLoading: isTableLoading,
     total,
     getTableData,
     onTableDelete,
   } = useHhTable<API.CostSharingDto>({ initData: [] });
 
-  const { keyword, onSearch } = useHhSearch<any>({
+  const { keyword, onSearch, searchData, setSearchData } = useHhSearch<any>({
     callback: getList,
     pageIndex,
     setPageIndex,
@@ -43,37 +38,23 @@ const CostExpense = () => {
       pageIndex,
       pageSize,
       keyword,
+      ...searchData,
     };
 
     getTableData<API.CostSharingDtoListApiResult, API.CostSharingDto[]>(
       CostSharingGetListPage(params),
-    );
+    ).then((res) => {
+      addDataSource(res);
+    });
   }
-
-  const onCostExpense = (id: string) => {
-    runRequest<API.BooleanApiResult, boolean>(
-      CostSharingCostExpense({ id }, { showMsg: true }),
-    ).then((res) => {
-      if (res) {
-        message.success('分摊成功');
-        getList();
-      }
-    });
-  };
-  const onCancelExpense = (id: string) => {
-    runRequest<API.BooleanApiResult, boolean>(
-      CostSharingCancelCostExpense({ id }, { showMsg: true }),
-    ).then((res) => {
-      if (res) {
-        message.success('取消成功');
-        getList();
-      }
-    });
-  };
 
   // 点击编辑
   const onEdit = (value: any, record: any) => {
     history.push(`/demo2/edit/${record.id}`);
+  };
+
+  const onAdd = () => {
+    history.push(`/demo2/edit/0`);
   };
 
   // 点击删除
@@ -85,30 +66,21 @@ const CostExpense = () => {
     });
   };
 
-  const column = useMemo(() => getColumn({ onEdit, onDel, onCostExpense, onCancelExpense }), []);
+  const column = useMemo(() => getColumn({ onEdit, onDel }), []);
 
   return (
     <div>
-      <HhTitleRow autoTitle title={'成本分摊'} />
-      <HhSearchBar
-        placeholder={i18next.tt('请输入')}
+      <HhTitleRow autoTitle title={i18next.t('列表')} />
+      <Search
         onSearch={onSearch}
-        value={keyword}
-        renderRight={
-          <>
-            <Button
-              type="primary"
-              onClick={() => {
-                history.push('/demo2/edit/0');
-              }}
-            >
-              {i18next.t('新建')}
-            </Button>
-          </>
-        }
+        keyword={keyword}
+        setAllSearchValue={setSearchData}
+        onAdd={onAdd}
+        isLoading={isLoading}
       />
+
       <HhTable
-        tableProps={{ isLoading }}
+        tableProps={{ isLoading: isLoading || isTableLoading }}
         hasSet={true}
         dataSource={dataSource}
         column={column}
@@ -123,6 +95,6 @@ const CostExpense = () => {
 
 export default () => (
   <HhKeepAlive>
-    <CostExpense />
+    <Index />
   </HhKeepAlive>
 );

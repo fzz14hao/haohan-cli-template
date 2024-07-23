@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import { HhKeepAlive, HhTable, HhTitleRow } from '@haohan/ui';
-import { useHhTable, useHhSearch } from '@haohan/hooks';
-import { objToFlat, dateToDatestr } from '@haohan/utils';
+import { useHhTable, useHhSearch, useHhRequest } from '@haohan/hooks';
 import i18next from '@haohan/utils/es/hhI18next';
 import { ComponentDelete } from '@/services/Mos/Component';
 import { ComponentDesignBaseGetPageListByParm } from '@/services/Mos/ComponentDesignBase';
@@ -11,6 +10,8 @@ import AddModal from './components/AddModal';
 import Search from './components/Search';
 
 const DemoIndex = () => {
+  const { runRequest, isLoading } = useHhRequest();
+
   const {
     dataSource,
     removeIndex,
@@ -19,12 +20,12 @@ const DemoIndex = () => {
     pageSize,
     onLoadMore,
     onLoadAll,
-    isLoading,
+    isLoading: isTableLoading,
     total,
     getTableData,
     onTableDelete,
-    startRetrieveData
-  } = useHhTable<API.ComponentDto>({ initData: [] });
+    startRetrieveData,
+  } = useHhTable<any[]>({ initData: [] });
 
   const [visible, setVisible] = useState<boolean>(false);
   const [rowData, setRowData] = useState<API.ComponentDesignBaseDto>();
@@ -38,17 +39,11 @@ const DemoIndex = () => {
 
   // 获取列表
   function getList() {
-    let newData = objToFlat(searchData, ['createTime'], [], {
-      createTime: ['startTime', 'endTime'],
-    });
-
-    newData = dateToDatestr(newData, ['startTime', 'endTime']);
     const params: API.QueryParamDto = {
       pageIndex,
       pageSize,
       keyword,
       ...searchData,
-      ...newData,
     };
     getTableData<API.ComponentDesignBaseDtoListApiResult, API.CompoQueryParamDto[]>(
       ComponentDesignBaseGetPageListByParm(params),
@@ -77,17 +72,18 @@ const DemoIndex = () => {
 
   return (
     <div>
-      <HhTitleRow autoTitle title='部位定义' />
+      <HhTitleRow autoTitle title={i18next.t('列表弹窗添加')} />
 
       <Search
         onSearch={onSearch}
         keyword={keyword}
         setAllSearchValue={setSearchData}
         onAdd={onAdd}
+        isLoading={isLoading || isTableLoading}
       />
 
       <HhTable
-        tableProps={{ isLoading }}
+        tableProps={{ isLoading: isLoading || isTableLoading }}
         hasSet={true}
         dataSource={dataSource}
         column={column}
