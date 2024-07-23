@@ -87,6 +87,8 @@ const Login: React.FC = () => {
         return;
       }
 
+      message.error(msg?.msg||'服务器异常');
+
 
       // 如果失败去设置用户错误信息
       //setUserLoginState(msg);

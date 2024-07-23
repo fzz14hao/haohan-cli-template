@@ -6,8 +6,18 @@ import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import { AccountGetUserProfile } from '@/services/Users/Account';
 import { setLocale } from 'umi';
-import i18next from 'i18next';
-import { storage, getLang, errorHandler, microActions ,responseInterceptors ,hhI18next,pageTitleRender,initI18next} from '@haohan/utils';
+import i18next from '@haohan/utils/es/hhI18next';
+import {
+  storage,
+  getLang,
+  errorHandler,
+  microActions,
+  responseInterceptors,
+  hhI18next,
+  pageTitleRender,
+  initI18next,
+  getPageIdAndPath,
+} from '@haohan/utils';
 
 import 'antd/dist/antd.less';
 import '@/css/common.less';
@@ -15,15 +25,20 @@ import '@/css/globalBig.less';
 import '@/css/globalDefault.less';
 import '@/css/globalSmall.less';
 
+import routes from '@/systemConfig/routes.json';
+
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
 // 添加翻译入口
-hhI18next.renderNode()
+hhI18next.renderNode({ routes });
 
 const authHeaderInterceptor = (url: string, options: RequestConfig) => {
   const tokenstr = storage.getLocal('token') || '';
-  const authHeader = { Authorization: `${tokenstr}` };
+  const lang = localStorage.getItem('i18nextLng') || '';
+  //请求头增加 PageInfo
+  const PageInfo = getPageIdAndPath(routes);
+  const authHeader = { Authorization: `${tokenstr}`, culture: lang, PageInfo };
 
   return {
     url: `${url}`,
@@ -92,8 +107,8 @@ export async function getInitialState(): Promise<{
 
   try {
     // 注册国际化
-    const { zhCN, zhTW, enUS, viVN ,kmKH} = await getLang();
-    initI18next(enUS, zhCN, zhTW, viVN,kmKH);
+    const { zhCN, zhTW, enUS, viVN, kmKH, esES } = await getLang();
+    initI18next(enUS, zhCN, zhTW, viVN, kmKH, esES);
   } catch {}
 
   // 如果是登录页面，不执行
@@ -152,7 +167,7 @@ export async function getInitialState(): Promise<{
 export const request: RequestConfig = {
   errorHandler: errorHandler,
   requestInterceptors: [authHeaderInterceptor],
-  responseInterceptors:[responseInterceptors]
+  responseInterceptors: [responseInterceptors],
 };
 
 console.log(process.env);
@@ -175,8 +190,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     },
     pageTitleRender(props, defaultPageTitle?, info?) {
       // TO DO
-      return pageTitleRender(props, defaultPageTitle, info,'xxxui')
-     },
+      return pageTitleRender(props, defaultPageTitle, info, 'xxxui');
+    },
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
@@ -215,7 +230,7 @@ export const qiankun = {
 
       // 切换语言
       if (state.lang !== prev.lang) {
-        i18next.changeLanguage(state.lang);
+        i18next.i18n.changeLanguage(state.lang);
         // 不刷新页面
         setLocale(state.lang, true);
       }

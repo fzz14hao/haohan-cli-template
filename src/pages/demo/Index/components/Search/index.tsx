@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import i18next from '@haohan/utils/es/hhI18next';
-import { Button } from 'antd';
-import { HhSearchBar } from '@haohan/ui';
+import { HhButtonModal, HhSearchBar } from '@haohan/ui';
 
 import getOtherData from '../../config/otherData';
 import moment from 'moment';
+import AddModal from '../AddModal';
 
 type SearchProps = {
   keyword: string | undefined;
@@ -46,24 +46,18 @@ const Search: React.FC<SearchProps> = (props) => {
         formatValue={{
           createTime: {
             set: (val: moment.MomentInput[]) => {
-              return [
-                moment(val[0]).format('YYYY/MM/DD'),
-                moment(val[1]).format('YYYY/MM/DD'),
-              ];
+              return [moment(val[0]).format('YYYY/MM/DD'), moment(val[1]).format('YYYY/MM/DD')];
             },
             get: (val: moment.MomentInput[]) => {
-              return [
-                moment(val[0], 'YYYY/MM/DD'),
-                moment(val[1], 'YYYY/MM/DD'),
-              ];
+              return [moment(val[0], 'YYYY/MM/DD'), moment(val[1], 'YYYY/MM/DD')];
             },
           },
         }}
         renderRight={
           <div>
-            <Button type="primary" onClick={onAdd}>
+            <HhButtonModal type="primary" Components={AddModal} onOk={async () => {}} parentData={{}}>
               {i18next.t('新建')}
-            </Button>
+            </HhButtonModal>
           </div>
         }
       />

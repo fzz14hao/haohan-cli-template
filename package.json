@@ -1,5 +1,5 @@
 {
-  "name": "mo",
+  "name": "ui",
   "version": "5.0.0",
   "private": true,
   "description": "An out-of-box UI solution for enterprise applications",
@@ -33,7 +33,20 @@
     "test:all": "node ./tests/run-tests.js",
     "test:component": "umi test ./src/components",
     "serve": "umi-serve",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "getPageId": "node ./node_modules/@haohan/plugs/es/getPageId.js",
+    "editI18next": "node ./node_modules/@haohan/plugs/es/editI18next.js",
+    "editI18nextComponents": "node ./node_modules/@haohan/plugs/es/editI18nextComponents.js",
+    "getPagePathToObject": "node ./node_modules/@haohan/plugs/es/getPagePathToObject.js",
+    "findi18next": "node ./node_modules/@haohan/plugs/es/findi18next.js",
+    "collectDuplicates": "node ./node_modules/@haohan/plugs/es/collectDuplicates.js",
+    "dup": "node ./node_modules/@haohan/plugs/es/dup.js",
+    "addRandomNameToComponents": "node ./node_modules/@haohan/plugs/es/addRandomNameToComponents.js",
+    "addRandomNameToComponentsForm": "node ./node_modules/@haohan/plugs/es/addRandomNameToComponentsForm.js",
+    "addRandomNameToHhForm": "node ./node_modules/@haohan/plugs/es/addRandomNameToHhForm.js",
+    "addRandomNameToHhTable": "node ./node_modules/@haohan/plugs/es/addRandomNameToHhTable.js",
+    "hhI18next": "npm run getPageId &  npm run editI18next & npm run editI18nextComponents",
+    "hhI18nextAll": "npm run getPageId &  npm run editI18next & npm run editI18nextComponents &  npm run getPagePathToObject & npm run findi18next &  npm run collectDuplicates &  npm run dup"
   },
   "lint-staged": {
     "**/*.less": "stylelint --syntax less",
@@ -58,14 +71,15 @@
     "@antv/l7": "^2.3.7",
     "@antv/l7-maps": "^2.3.7",
     "@antv/l7-react": "^2.1.9",
-    "@haohan/hooks": "^0.0.23",
-    "@haohan/ui": "^0.1.56",
-    "@haohan/utils": "^0.0.67",
+    "@haohan/hooks": "^0.0.35",
+    "@haohan/plugs": "^0.0.11",
+    "@haohan/ui": "^0.1.158",
+    "@haohan/utils": "^0.0.91",
     "@types/lodash.debounce": "^4.0.6",
     "@umijs/route-utils": "^1.0.36",
     "ahooks": "^2.0.0",
     "ali-react-table": "^2.6.1",
-    "antd": "^4.14.0",
+    "antd": "4.24.12",
     "bizcharts": "^3.5.3-beta.0",
     "bizcharts-plugin-slider": "^2.1.1-beta.1",
     "classnames": "^2.2.6",
@@ -132,6 +146,10 @@
     "react-draggable": "^4.4.3",
     "stylelint": "^13.0.0",
     "typescript": "^4.2.2"
+  },
+  "resolutions": {
+    "@umijs/openapi": "1.8.5",
+    "antd": "4.24.12"
   },
   "engines": {
     "node": ">=10.0.0"

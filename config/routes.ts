@@ -66,6 +66,7 @@ export default [
         name: '示例列表',
         layout,
         component: './demo/Index',
+        id: 'xxui001',
       },
     ],
   },
@@ -83,6 +84,7 @@ export default [
         name: '示例列表',
         layout,
         component: './demo2/index',
+        id: 'xxui1001',
       },
 
       {
@@ -91,7 +93,8 @@ export default [
         hideInMenu: true,
         name: '编辑',
         component: './demo2/edit',
-        parentKeys: ['/demo2/index']
+        parentKeys: ['/demo2/index'],
+        id: 'xxui1002',
       },
     ],
   },

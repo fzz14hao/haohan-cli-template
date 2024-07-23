@@ -9,7 +9,7 @@ import {
   SearchCostCenter,
   SearchCostItem,
 } from '@haohan/ui';
-import i18n from '@haohan/utils/es/hhI18next';
+import i18next from '@haohan/utils/es/hhI18next';
 import { FactoryGetPageListByParmNoPermission } from '@/services/BasicInfo/Factory';
 import { CostCenterGetListPage } from '@/services/Fi/CostCenter';
 import { DepartmentGetPageListByParm } from '@/services/BasicInfo/Department';
@@ -23,9 +23,9 @@ const getFormList = (props?: any) => {
     {
       key: 1,
       name: 'factoryCode',
-      label: i18n.t('工厂'),
+      label:i18next.t('工厂'),
       props: {
-        rules: [{ required: true, message: i18n.t('请选择工厂') }],
+        rules: [{ required: true, message:i18next.t('请选择工厂') }],
       },
       render: () => {
         return (
@@ -68,10 +68,10 @@ const getFormList = (props?: any) => {
     },
     {
       key: 2,
-      label: i18n.t('成本中心'),
+      label:i18next.t('成本中心'),
       name: 'costCenterCode',
       props: {
-        rules: [{ required: true, message: i18n.t('请选择成本中心') }],
+        rules: [{ required: true, message:i18next.t('请选择成本中心') }],
       },
       render: () => {
         return (
@@ -101,7 +101,7 @@ const getFormList = (props?: any) => {
     },
     {
       key: 3,
-      label: i18n.t('状态'),
+      label:i18next.t('状态'),
       name: 'status',
       default: true,
       render: (value: any) => {
@@ -110,12 +110,12 @@ const getFormList = (props?: any) => {
             status={basicInfo?.status}
             configData={[
               {
-                text: i18n.t('已分摊'),
+                text:i18next.t('已分摊'),
                 color: 'blue',
                 statusCode: 1,
               },
               {
-                text: i18n.t('未分摊'),
+                text:i18next.t('未分摊'),
                 color: 'red',
                 statusCode: 0,
               },
@@ -127,10 +127,10 @@ const getFormList = (props?: any) => {
 
     {
       key: 4,
-      label: i18n.t('账期'),
+      label:i18next.t('账期'),
       name: 'financialDate',
       props: {
-        rules: [{ required: true, message: i18n.t('请选择账期') }],
+        rules: [{ required: true, message:i18next.t('请选择账期') }],
       },
       render: () => {
         return (
@@ -145,10 +145,10 @@ const getFormList = (props?: any) => {
     },
     {
       key: 5,
-      label: i18n.t('成本代码'),
+      label:i18next.t('成本代码'),
       name: 'costItemCode',
       props: {
-        rules: [{ required: true, message: i18n.t('请选择成本代码') }],
+        rules: [{ required: true, message:i18next.t('请选择成本代码') }],
       },
       render: () => {
         return (
@@ -179,10 +179,10 @@ const getFormList = (props?: any) => {
 
     {
       key: 6,
-      label: i18n.t('成本金额'),
+      label:i18next.t('成本金额'),
       name: 'extCost',
       props: {
-        rules: [{ required: true, message: i18n.t('请输入成本金额') }],
+        rules: [{ required: true, message:i18next.t('请输入成本金额') }],
       },
       render: () => {
         return <InputNumber disabled={isEdit} min={0} />;
@@ -190,10 +190,10 @@ const getFormList = (props?: any) => {
     },
     {
       key: 6.5,
-      label: i18n.t('部门'),
+      label:i18next.t('部门'),
       name: 'departmentCode',
       props: {
-        rules: [{ required: true, message: i18n.t('请选择部门') }],
+        rules: [{ required: true, message:i18next.t('请选择部门') }],
       },
       render: () => {
         return (
@@ -223,10 +223,10 @@ const getFormList = (props?: any) => {
     },
     {
       key: 7,
-      label: i18n.t('货币'),
+      label:i18next.t('货币'),
       name: 'currencyCode',
       props: {
-        rules: [{ required: true, message: i18n.t('请选择货币') }],
+        rules: [{ required: true, message:i18next.t('请选择货币') }],
       },
       render: () => {
         return (
@@ -253,7 +253,7 @@ const getFormList = (props?: any) => {
 
     {
       key: 8,
-      label: i18n.t('分配金额'),
+      label:i18next.t('分配金额'),
       name: 'amtCost',
       render: () => {
         return <Input disabled />;
@@ -261,7 +261,7 @@ const getFormList = (props?: any) => {
     },
     {
       key: 9,
-      label: i18n.t('创建时间'),
+      label:i18next.t('创建时间'),
       name: 'timeCreated',
       render: () => {
         return <Input disabled />;
@@ -269,7 +269,7 @@ const getFormList = (props?: any) => {
     },
     {
       key: 10,
-      label: i18n.t('创建人'),
+      label:i18next.t('创建人'),
       name: 'userIdCreated',
       render: () => {
         return <Input disabled />;
@@ -277,7 +277,7 @@ const getFormList = (props?: any) => {
     },
     {
       key: 11,
-      label: i18n.t('分摊时间'),
+      label:i18next.t('分摊时间'),
       name: 'postedDate',
       render: () => {
         return <Input disabled />;
@@ -285,7 +285,7 @@ const getFormList = (props?: any) => {
     },
     {
       key: 12,
-      label: i18n.t('分摊人'),
+      label:i18next.t('分摊人'),
       name: 'postedUser',
       render: () => {
         return <Input disabled />;

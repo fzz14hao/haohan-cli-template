@@ -4,21 +4,22 @@ import getFormList from './config/formList';
 import i18next from '@haohan/utils/es/hhI18next';
 import { useHhForm } from '@haohan/hooks';
 import { ComponentDesignBaseAddOrUpdate } from '@/services/Mos/ComponentDesignBase';
+import { HhButtonModalProps } from '@haohan/ui/es/BusinessComponent/HhButtonModal';
 
-type AddModalProps = {
-  rowData: any;
-  setVisible: (b: boolean) => void;
-  onOk: (d?: any) => void;
-  visible: boolean;
-};
+const AddModal = (props: HhButtonModalProps) => {
+  const { parentData, onOk, visible, setVisible } = props;
 
-const AddModal = (props: AddModalProps) => {
-  const { rowData, onOk, visible, setVisible } = props;
-
-  const { form, formData, submitForm, runValidateFields, onValuesChange, setFieldsValue } =
-    useHhForm<any>({
-      initFormData: rowData,
-    });
+  const {
+    form,
+    formData,
+    submitForm,
+    runValidateFields,
+    onValuesChange,
+    setFieldsValue,
+    isLoading,
+  } = useHhForm<any>({
+    initFormData: parentData,
+  });
 
   const onSave = async () => {
     if (!(await runValidateFields(form))) return;
@@ -37,27 +38,25 @@ const AddModal = (props: AddModalProps) => {
   };
 
   useEffect(() => {
-    setFieldsValue(rowData);
-  }, [rowData]);
+    setFieldsValue(parentData);
+  }, [parentData]);
 
   const formList = getFormList({
     formData,
     setFieldsValue,
   });
 
-  console.log(formData)
-
   return (
     <DraggableModal
-      title={rowData.id ? i18next.t('编辑') : i18next.t('新建')}
+      title={parentData?.id ? i18next.t('编辑') : i18next.t('新建')}
       visible={visible}
       width={600}
       onCancel={() => setVisible(false)}
       onOk={onSave}
+      okButtonProps={{ loading: isLoading }}
     >
       <HhForm
-        formName="demo-edit-form"
-        hasSet={true}
+        hasSet
         formProps={{ form, onValuesChange }}
         formData={formList}
         columnsNum={1}
