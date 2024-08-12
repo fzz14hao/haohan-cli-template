@@ -78,7 +78,7 @@ const getFormList = (props?: any) => {
       label: i18next.t('分配金额'),
       name: 'amtCost',
       render: () => {
-        return <Input disabled={isDisableForm}/>;
+        return <Input disabled={isDisableForm} />;
       },
     },
     {

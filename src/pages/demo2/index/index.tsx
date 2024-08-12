@@ -22,7 +22,6 @@ const Index = () => {
     isLoading: isTableLoading,
     total,
     getTableData,
-    onTableDelete,
   } = useHhTable<API.CostSharingDto>({ initData: [] });
 
   const { keyword, onSearch, searchData, setSearchData } = useHhSearch<any>({
@@ -57,16 +56,7 @@ const Index = () => {
     history.push(`/demo2/edit/0`);
   };
 
-  // 点击删除
-  const onDel = (value: any, record: any, index: number) => {
-    onTableDelete({
-      record: { ids: [record.id] },
-      deleteFn: CostSharingDelete,
-      index,
-    });
-  };
-
-  const column = useMemo(() => getColumn({ onEdit, onDel }), []);
+  const column = useMemo(() => getColumn({ onEdit, removeIndex }), []);
 
   return (
     <div>

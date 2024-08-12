@@ -1,7 +1,8 @@
-import { HhStatusTag } from '@haohan/ui';
+import { HhDeleteButton, HhStatusTag } from '@haohan/ui';
 import { renderCodeAndName, amount } from '@haohan/utils';
 import { Button } from 'antd';
 import i18next from '@haohan/utils/es/hhI18next';
+import { CostSharingDelete } from '@/services/Fi/CostSharing';
 
 const getColumn = (props: any) => {
   return [
@@ -117,14 +118,16 @@ const getColumn = (props: any) => {
             <Button size="small" type="link" onClick={() => props.onEdit(value, record, rowIndex)}>
               {i18next.t('详情')}
             </Button>
-            <Button
-              className="cus-ml-5"
-              size="small"
+            <HhDeleteButton
               type="link"
-              onClick={() => props.onDel(value, record, rowIndex)}
-            >
-              {i18next.t('删除')}
-            </Button>
+              size="small"
+              record={{
+                id: record?.id,
+              }}
+              rowIndex={rowIndex}
+              deleteFn={CostSharingDelete}
+              removeIndex={props.removeIndex}
+            ></HhDeleteButton>
           </div>
         );
       },

@@ -1,6 +1,8 @@
-import { HhStatusTag } from '@haohan/ui';
+import { HhButtonModal, HhDeleteButton, HhStatusTag } from '@haohan/ui';
 import { Button } from 'antd';
 import i18next from '@haohan/utils/es/hhI18next';
+import AddModal from '../components/AddModal';
+import { ComponentDelete } from '@/services/Mos/Component';
 
 const getColumn = (props: any) => {
   return [
@@ -27,7 +29,7 @@ const getColumn = (props: any) => {
       name: i18next.t('部位名称'),
       features: { sortable: true },
     },
-   
+
     {
       id: 7,
       code: 'prodProcess',
@@ -92,17 +94,25 @@ const getColumn = (props: any) => {
       render: (value: any, record: any, rowIndex: number) => {
         return (
           <div style={{ textAlign: 'center' }}>
-            <Button type="link" size="small" onClick={() => props.onEdit(value, record, rowIndex)}>
-              {i18next.t('详情')}
-            </Button>
-            <Button
+            <HhButtonModal
               type="link"
-              className="cus-ml-5"
               size="small"
-              onClick={() => props.onDel(value, record, rowIndex)}
+              Components={AddModal}
+              parentData={record}
+              onOk={async () => props.addCallBack()}
             >
-              {i18next.t('删除')}
-            </Button>
+              {i18next.t('详情')}
+            </HhButtonModal>
+            <HhDeleteButton
+              type="link"
+              size="small"
+              record={{
+                id: record?.id,
+              }}
+              rowIndex={rowIndex}
+              deleteFn={ComponentDelete}
+              removeIndex={props.removeIndex}
+            ></HhDeleteButton>
           </div>
         );
       },

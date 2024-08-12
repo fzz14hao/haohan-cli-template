@@ -1,21 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import i18next from '@haohan/utils/es/hhI18next';
-import { Button } from 'antd';
-import { HhSearchBar } from '@haohan/ui';
+import { HhButtonModal, HhSearchBar, HHSearchBarPageProps } from '@haohan/ui';
 
 import getOtherData from '../../config/otherData';
 import moment from 'moment';
+import AddModal from '../AddModal';
 
-type HHSearchBarProps = {
-  keyword: string | undefined;
-  onSearch: (obj: any) => void;
-  setAllSearchValue?: (obj: any) => void;
-  onAdd?: () => void;
-  [key: string]: any;
-};
-
-const Search: React.FC<HHSearchBarProps> = (props) => {
-  const { keyword, onSearch, setAllSearchValue, onAdd, isLoading } = props;
+const Search: React.FC<HHSearchBarPageProps> = (props) => {
+  const { keyword, onSearch, setAllSearchValue, isLoading, addCallBack } = props;
 
   const [searchValue, setSearchValue] = useState<any>({});
 
@@ -30,10 +22,14 @@ const Search: React.FC<HHSearchBarProps> = (props) => {
     }
   }, [searchValue]);
 
-  const otherData = getOtherData({
-    setSearchValue,
-    searchValue,
-  });
+  const otherData = useMemo(
+    () =>
+      getOtherData({
+        setSearchValue,
+        searchValue,
+      }),
+    [searchValue],
+  );
 
   return (
     <>
@@ -56,11 +52,14 @@ const Search: React.FC<HHSearchBarProps> = (props) => {
         }}
         isLoading={isLoading}
         renderRight={
-          <div>
-            <Button type="primary" onClick={onAdd}>
-              {i18next.t('新建')}
-            </Button>
-          </div>
+          <HhButtonModal
+            type="primary"
+            Components={AddModal}
+            onOk={async () => addCallBack()}
+            parentData={{}}
+          >
+            {i18next.t('添加')}
+          </HhButtonModal>
         }
       />
     </>

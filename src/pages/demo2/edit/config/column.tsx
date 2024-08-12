@@ -1,6 +1,7 @@
 import { amount } from '@haohan/utils';
-import { Button } from 'antd';
 import i18next from '@haohan/utils/es/hhI18next';
+import { HhButtonModal } from '@haohan/ui';
+import DetailsModal from '../components/DetailsModal';
 
 const getColumn = (props: any) => {
   const { formData, isDisableForm } = props;
@@ -42,14 +43,14 @@ const getColumn = (props: any) => {
       render: (value: any, record: any, rowIndex: number) => {
         return (
           <div style={{ textAlign: 'center' }}>
-            <Button
-              disabled={isDisableForm}
-              size="small"
-              type="link"
-              onClick={() => props.onEdit(value, record, rowIndex)}
+            <HhButtonModal
+              type="text"
+              Components={DetailsModal}
+              parentData={record}
+              onOk={async () => props?.getById()}
             >
               {i18next.t('详情')}
-            </Button>
+            </HhButtonModal>
           </div>
         );
       },

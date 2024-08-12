@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button, Collapse, Form, message, Space, Tabs } from 'antd';
 import { history, useParams } from 'umi';
-import { HhTable, BackBar, HhForm, HhTitleRow } from '@haohan/ui';
+import { HhTable, BackBar, HhForm, HhTitleRow, HhButtonModal } from '@haohan/ui';
 import { useGetById, useHhForm, useHhRequest } from '@haohan/hooks';
 import i18next from '@haohan/utils/es/hhI18next';
 import {
@@ -31,10 +31,6 @@ const Edit = () => {
   } = useHhForm<any>({
     initFormData: {},
   });
-
-  const [visible, setVisible] = useState<boolean>(false);
-  const [detailsData, setDetailsData] = useState<any[]>([]);
-  const [rowData, setRowData] = useState<any>({});
 
   // 获取详情
   const getById = () => {
@@ -68,21 +64,11 @@ const Edit = () => {
     });
   };
 
-  const onEdit = (value: any, record: any) => {
-    setRowData(record);
-    setVisible(true);
-  };
-
-  const onAddItems = () => {
-    setRowData({});
-    setVisible(true);
-  };
-
   useGetById(() => {
     getById();
   });
 
-  const column = getColumn({ formData, onEdit ,isDisableForm});
+  const column = getColumn({ formData, isDisableForm, getById });
 
   const formList = getFormList({
     formData,
@@ -118,16 +104,19 @@ const Edit = () => {
 
       <Collapse defaultActiveKey={['1']}>
         <Collapse.Panel header={i18next.t('基本信息')} key="1">
-          <HhForm formProps={{ form, onValuesChange }} hasSet={true} formData={formList} />
+          <HhForm formProps={{ form, onValuesChange }} hasSet={true} formData={formList}  />
         </Collapse.Panel>
       </Collapse>
 
       <Tabs>
         <Tabs.TabPane tab={i18next.t('明细')} key="1">
           <Space className="cus-mb-10">
-            <Button type="primary" onClick={onAddItems} disabled={isDisableForm}>
-              {i18next.t('添加')}
-            </Button>
+            <HhButtonModal
+              type="primary"
+              Components={DetailsModal}
+              parentData={{}}
+              onOk={async () => getById()}
+            ></HhButtonModal>
           </Space>
           <HhTable
             tableProps={{ isLoading: isLoading || isLoadingForm }}
@@ -137,15 +126,6 @@ const Edit = () => {
           />
         </Tabs.TabPane>
       </Tabs>
-
-      {visible && (
-        <DetailsModal
-          visible={visible}
-          setVisible={setVisible}
-          rowData={rowData}
-          onOk={() => setVisible(false)}
-        ></DetailsModal>
-      )}
     </div>
   );
 };

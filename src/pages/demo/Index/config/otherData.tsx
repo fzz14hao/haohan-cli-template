@@ -37,7 +37,7 @@ const getOtherData = (props?: any) => {
       name: 'createTime',
       label: i18next.t('创建日期'),
       render: () => {
-        return <DatePicker.RangePicker />;
+        return <DatePicker />;
       },
     },
   ];

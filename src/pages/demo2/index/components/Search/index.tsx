@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import i18next from '@haohan/utils/es/hhI18next';
 import { Button } from 'antd';
-import { HhSearchBar } from '@haohan/ui';
+import { HhSearchBar, HHSearchBarPageProps } from '@haohan/ui';
 
 import getOtherData from '../../config/otherData';
 import moment from 'moment';
 
-type HHSearchBarProps = {
-  keyword: string | undefined;
-  onSearch: (obj: any) => void;
-  setAllSearchValue?: (obj: any) => void;
-  onAdd?: () => void;
-  isLoading: boolean;
-  [key: string]: any;
-};
-
-const Search: React.FC<HHSearchBarProps> = (props) => {
+const Search: React.FC<HHSearchBarPageProps> = (props) => {
   const { keyword, onSearch, setAllSearchValue, onAdd, isLoading } = props;
 
   const [searchValue, setSearchValue] = useState<any>({});
@@ -31,10 +22,14 @@ const Search: React.FC<HHSearchBarProps> = (props) => {
     }
   }, [searchValue]);
 
-  const otherData = getOtherData({
-    setSearchValue,
-    searchValue,
-  });
+  const otherData = useMemo(
+    () =>
+      getOtherData({
+        setSearchValue,
+        searchValue,
+      }),
+    [searchValue],
+  );
 
   return (
     <>
