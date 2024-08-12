@@ -9,30 +9,66 @@ const args = process.argv.slice(2); // 忽略前两个默认参数 (node 和脚�
 // 从命令行参数中获取目录路径
 let dirName = args[0]; // 如果没有提供参数，
 
-// 文件路径
-const filePath = path.resolve(__dirname, dirName, 'index.tsx');
+// 读取文本文件的路径
+const IndexTxtFilePath = path.resolve(__dirname, '../temple/demo/Index/index.txt');
+const IndexConfigColumnTxtFilePath = path.resolve(
+  __dirname,
+  '../temple/demo/Index/config/column.txt',
+);
+const IndexConfigOtherDataTxtFilePath = path.resolve(
+  __dirname,
+  '../temple/demo/Index/config/otherData.txt',
+);
+const IndexComponentsSearchIndexTxtFilePath = path.resolve(
+  __dirname,
+  '../temple/demo/Index/components/Search/index.txt',
+);
+const IndexComponentsAddModalIndexTxtFilePath = path.resolve(
+  __dirname,
+  '../temple/demo/Index/components/AddModal/index.txt',
+);
+const IndexComponentsAddModalConfigFormListTxtFilePath = path.resolve(
+  __dirname,
+  '../temple/demo/Index/components/AddModal/config/formList.txt',
+);
 
-// 检查目录是否存在
-const dirPath = path.dirname(filePath);
+//#region Index/index.tsx
 
-if (!fs.existsSync(dirPath)) {
-  // 创建目录
-  fs.mkdir(dirPath, { recursive: true }, (err) => {
-    if (err) throw err;
-    console.log(`目录 ${dirPath} 创建成功`);
-    // 写入文件
-    fs.writeFile(filePath, JSON.stringify([...new Set(reuseJson)], null, 2), (err) => {
+// 读取文本文件
+fs.readFile(IndexTxtFilePath, 'utf8', (err, data) => {
+  if (err) {
+    console.error(`Error reading file: ${err}`);
+    return;
+  }
+
+  // 文件路径
+  const filePath = path.resolve(__dirname, dirName, 'index.tsx');
+
+  // 检查目录是否存在
+  const dirPath = path.dirname(filePath);
+
+  if (!fs.existsSync(dirPath)) {
+    // 创建目录
+    fs.mkdir(dirPath, { recursive: true }, (err) => {
+      if (err) throw err;
+      console.log(`目录 ${dirPath} 创建成功`);
+      // 写入文件
+      fs.writeFile(filePath, data, (err) => {
+        if (err) throw err;
+        console.log('Index.tsx 保存成功');
+      });
+    });
+  } else {
+    // 目录已存在，直接写入文件
+    fs.writeFile(filePath, data, (err) => {
       if (err) throw err;
       console.log('Index.tsx 保存成功');
     });
-  });
-} else {
-  // 目录已存在，直接写入文件
-  fs.writeFile(filePath, JSON.stringify([...new Set(reuseJson)], null, 2), (err) => {
-    if (err) throw err;
-    console.log('Index.tsx 保存成功');
-  });
-}
+  }
+});
+//#endregion
+
+//#region /Index/less.less
 
 // less文件路径
 const filePathLess = path.resolve(__dirname, dirName, 'index.less');
@@ -46,63 +82,193 @@ if (!fs.existsSync(dirPathLess)) {
     if (err) throw err;
     console.log(`目录 ${dirPathLess} 创建成功`);
     // 写入文件
-    fs.writeFile(filePathLess, JSON.stringify([...new Set(reuseJson)], null, 2), (err) => {
+    fs.writeFile(filePathLess, '', (err) => {
       if (err) throw err;
       console.log('index.less 保存成功');
     });
   });
 } else {
   // 目录已存在，直接写入文件
-  fs.writeFile(filePathLess, JSON.stringify([...new Set(reuseJson)], null, 2), (err) => {
+  fs.writeFile(filePathLess, '', (err) => {
     if (err) throw err;
     console.log('Index.less 保存成功');
   });
 }
 
-const filePathConfig = path.resolve(__dirname, dirName, 'config/column.tsx');
+//#endregion
 
-// 检查目录是否存在
-const dirPathConfig = path.dirname(filePathConfig);
+//#region /Index/config/column.tsx
+// 读取文本文件
+fs.readFile(IndexConfigColumnTxtFilePath, 'utf8', (err, data) => {
+  if (err) {
+    console.error(`Error reading file: ${err}`);
+    return;
+  }
 
-if (!fs.existsSync(dirPathConfig)) {
-  // 创建目录
-  fs.mkdir(dirPathConfig, { recursive: true }, (err) => {
-    if (err) throw err;
-    console.log(`目录 ${dirPathConfig} 创建成功`);
-    // 写入文件
-    fs.writeFile(filePathConfig, JSON.stringify([...new Set(reuseJson)], null, 2), (err) => {
+  const filePathConfig = path.resolve(__dirname, dirName, 'config/column.tsx');
+
+  // 检查目录是否存在
+  const dirPathConfig = path.dirname(filePathConfig);
+
+  if (!fs.existsSync(dirPathConfig)) {
+    // 创建目录
+    fs.mkdir(dirPathConfig, { recursive: true }, (err) => {
+      if (err) throw err;
+      console.log(`目录 ${dirPathConfig} 创建成功`);
+      // 写入文件
+      fs.writeFile(filePathConfig, data, (err) => {
+        if (err) throw err;
+        console.log('config/column.tsx 表格配置创建成功');
+      });
+    });
+  } else {
+    // 目录已存在，直接写入文件
+    fs.writeFile(filePathConfig, data, (err) => {
       if (err) throw err;
       console.log('config/column.tsx 表格配置创建成功');
     });
-  });
-} else {
-  // 目录已存在，直接写入文件
-  fs.writeFile(filePathConfig, JSON.stringify([...new Set(reuseJson)], null, 2), (err) => {
-    if (err) throw err;
-    console.log('config/column.tsx 表格配置创建成功');
-  });
-}
+  }
+});
 
-const filePathSearch = path.resolve(__dirname, dirName, 'config/otherData.tsx');
+//#endregion
 
-// 检查目录是否存在
-const dirPathSearch = path.dirname(filePathSearch);
+//#region /Index/config/otherData.tsx
 
-if (!fs.existsSync(dirPathSearch)) {
-  // 创建目录
-  fs.mkdir(dirPathSearch, { recursive: true }, (err) => {
-    if (err) throw err;
-    console.log(`目录 ${dirPathSearch} 创建成功`);
-    // 写入文件
-    fs.writeFile(filePathSearch, JSON.stringify([...new Set(reuseJson)], null, 2), (err) => {
+fs.readFile(IndexConfigOtherDataTxtFilePath, 'utf8', (err, data) => {
+  if (err) {
+    console.error(`Error reading file: ${err}`);
+    return;
+  }
+
+  const filePathSearch = path.resolve(__dirname, dirName, 'config/otherData.tsx');
+
+  // 检查目录是否存在
+  const dirPathSearch = path.dirname(filePathSearch);
+
+  if (!fs.existsSync(dirPathSearch)) {
+    // 创建目录
+    fs.mkdir(dirPathSearch, { recursive: true }, (err) => {
+      if (err) throw err;
+      console.log(`目录 ${dirPathSearch} 创建成功`);
+      // 写入文件
+      fs.writeFile(filePathSearch, data, (err) => {
+        if (err) throw err;
+        console.log('config/otherData.tsx 搜索配置创建成功');
+      });
+    });
+  } else {
+    // 目录已存在，直接写入文件
+    fs.writeFile(filePathSearch, data, (err) => {
       if (err) throw err;
       console.log('config/otherData.tsx 搜索配置创建成功');
     });
-  });
-} else {
-  // 目录已存在，直接写入文件
-  fs.writeFile(filePathSearch, JSON.stringify([...new Set(reuseJson)], null, 2), (err) => {
-    if (err) throw err;
-    console.log('config/otherData.tsx 搜索配置创建成功');
-  });
-}
+  }
+});
+//#endregion
+
+//#region /Index/components/Search/index.tsx
+fs.readFile(IndexComponentsSearchIndexTxtFilePath, 'utf8', (err, data) => {
+  if (err) {
+    console.error(`Error reading file: ${err}`);
+    return;
+  }
+
+
+  const filePathSearch = path.resolve(__dirname, dirName, 'components/Search/index.tsx');
+
+  // 检查目录是否存在
+  const dirPathSearch = path.dirname(filePathSearch);
+
+  if (!fs.existsSync(dirPathSearch)) {
+    // 创建目录
+    fs.mkdir(dirPathSearch, { recursive: true }, (err) => {
+      if (err) throw err;
+      console.log(`目录 ${dirPathSearch} 创建成功`);
+      // 写入文件
+      fs.writeFile(filePathSearch, data, (err) => {
+        if (err) throw err;
+        console.log('components/Search/index.tsx 创建成功');
+      });
+    });
+  } else {
+    // 目录已存在，直接写入文件
+    fs.writeFile(filePathSearch, data, (err) => {
+      if (err) throw err;
+      console.log('components/Search/index.tsx 创建成功');
+    });
+  }
+
+});
+//#endregion
+
+//#region Index/components/AddModal/index.tsx
+fs.readFile(IndexComponentsAddModalIndexTxtFilePath, 'utf8', (err, data) => {
+  if (err) {
+    console.error(`Error reading file: ${err}`);
+    return;
+  }
+
+
+
+  const filePathSearch = path.resolve(__dirname, dirName, 'components/AddModal/index.tsx');
+
+  // 检查目录是否存在
+  const dirPathSearch = path.dirname(filePathSearch);
+
+  if (!fs.existsSync(dirPathSearch)) {
+    // 创建目录
+    fs.mkdir(dirPathSearch, { recursive: true }, (err) => {
+      if (err) throw err;
+      console.log(`目录 ${dirPathSearch} 创建成功`);
+      // 写入文件
+      fs.writeFile(filePathSearch, data, (err) => {
+        if (err) throw err;
+        console.log('components/AddModal/index.tsx 创建成功');
+      });
+    });
+  } else {
+    // 目录已存在，直接写入文件
+    fs.writeFile(filePathSearch, data, (err) => {
+      if (err) throw err;
+      console.log('components/AddModal/index.tsx 创建成功');
+    });
+  }
+
+});
+//#endregion
+
+//#region Index/components/AddModal/config/formList.tsx
+fs.readFile(IndexComponentsAddModalConfigFormListTxtFilePath, 'utf8', (err, data) => {
+  if (err) {
+    console.error(`Error reading file: ${err}`);
+    return;
+  }
+
+
+  
+  const filePathSearch = path.resolve(__dirname, dirName, 'components/AddModal/config/formList.tsx');
+
+  // 检查目录是否存在
+  const dirPathSearch = path.dirname(filePathSearch);
+
+  if (!fs.existsSync(dirPathSearch)) {
+    // 创建目录
+    fs.mkdir(dirPathSearch, { recursive: true }, (err) => {
+      if (err) throw err;
+      console.log(`目录 ${dirPathSearch} 创建成功`);
+      // 写入文件
+      fs.writeFile(filePathSearch, data, (err) => {
+        if (err) throw err;
+        console.log('components/AddModal/config/formList.tsx 创建成功');
+      });
+    });
+  } else {
+    // 目录已存在，直接写入文件
+    fs.writeFile(filePathSearch, data, (err) => {
+      if (err) throw err;
+      console.log('components/AddModal/config/formList.tsx 创建成功');
+    });
+  }
+});
+
+//#endregion
