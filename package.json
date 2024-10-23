@@ -33,7 +33,12 @@
     "test:all": "node ./tests/run-tests.js",
     "test:component": "umi test ./src/components",
     "serve": "umi-serve",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "createDemo1": "node ./node_modules/@haohan/plugs/es/createDemo1.js",
+    "createDemo2": "node ./node_modules/@haohan/plugs/es/createDemo2.js",
+    "createEditPage": "node ./node_modules/@haohan/plugs/es/createEditPage.js",
+    "createListPage": "node ./node_modules/@haohan/plugs/es/createListPage .js",
+    "createModal": "node ./node_modules/@haohan/plugs/es/createModal .js"
   },
   "lint-staged": {
     "**/*.less": "stylelint --syntax less",
@@ -50,6 +55,7 @@
   "dependencies": {
     "@ant-design/charts": "^0.9.4",
     "@ant-design/icons": "^4.5.0",
+    "@ant-design/pro-components": "^2.7.18",
     "@ant-design/pro-descriptions": "^1.6.8",
     "@ant-design/pro-form": "^1.18.3",
     "@ant-design/pro-layout": "^6.15.3",
@@ -58,8 +64,9 @@
     "@antv/l7": "^2.3.7",
     "@antv/l7-maps": "^2.3.7",
     "@antv/l7-react": "^2.1.9",
-    "@haohan/hooks": "^0.0.35",
-    "@haohan/ui": "^0.1.164",
+    "@haohan/hooks": "^0.0.36",
+    "@haohan/plugs": "^0.0.11",
+    "@haohan/ui": "^0.1.167",
     "@haohan/utils": "^0.0.92",
     "@types/lodash.debounce": "^4.0.6",
     "@umijs/route-utils": "^1.0.36",
@@ -89,7 +96,8 @@
     "react-router": "^4.3.1",
     "umi": "^3.5.17",
     "umi-plugin-keep-alive": "^0.0.1-beta.31",
-    "umi-serve": "^1.9.10"
+    "umi-serve": "^1.9.10",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^2.0.2",

@@ -247,6 +247,30 @@ export default [
       },
     ],
   },
+   // demoTest4
+   {
+    path: '/formLoyout',
+    name: '表单布局',
+    icon: 'crown',
+    hideInMenu,
+    layout,
+    routes: [
+      {
+        path: '/formLoyout/index',
+        name: '示例列表',
+        layout,
+        component: './formLoyout/Index',
+      },
+      {
+        path: '/formLoyout/edit/:id?',
+        layout,
+        hideInMenu: true,
+        name: '编辑',
+        component: './formLoyout/Edit',
+        parentKeys: ['/formLoyout/index'],
+      },
+    ],
+  },
   {
     component: '404',
   },

@@ -7,8 +7,8 @@
  * https://pro.ant.design/docs/deploy
  */
 // const dev = 'http://120.76.194.61:6500';
- const dev='http://10.9.0.15:6500'
-//const dev='https://erppre.pheyma.com'
+//  const dev='http://10.9.0.15:6500'
+const dev='https://erppre.pheyma.com'
 //  const dev='http://localhost:6500'
 
 export default {

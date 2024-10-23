@@ -32,7 +32,7 @@ const EditConfigColumnTxtFilePath = path.resolve(
   __dirname,
   '../temple/demo2/Edit/config/column.txt',
 );
-const EditConfigOtherDataTxtFilePath = path.resolve(
+const EditConfigFormListTxtFilePath = path.resolve(
   __dirname,
   '../temple/demo2/Edit/config/formList.txt',
 );
@@ -215,3 +215,181 @@ fs.readFile(IndexComponentsSearchIndexTxtFilePath, 'utf8', (err, data) => {
 
 });
 //#endregion
+
+
+//#region /Edit/index.txt
+fs.readFile(EditTxtFilePath, 'utf8', (err, data) => {
+  if (err) {
+    console.error(`Error reading file: ${err}`);
+    return;
+  }
+
+
+  const filePathSearch = path.resolve(__dirname, dirName, 'Edit/index.tsx');
+
+  // 检查目录是否存在
+  const dirPathSearch = path.dirname(filePathSearch);
+
+  if (!fs.existsSync(dirPathSearch)) {
+    // 创建目录
+    fs.mkdir(dirPathSearch, { recursive: true }, (err) => {
+      if (err) throw err;
+      console.log(`目录 ${dirPathSearch} 创建成功`);
+      // 写入文件
+      fs.writeFile(filePathSearch, data, (err) => {
+        if (err) throw err;
+        console.log('Edit/index.tsx 创建成功');
+      });
+    });
+  } else {
+    // 目录已存在，直接写入文件
+    fs.writeFile(filePathSearch, data, (err) => {
+      if (err) throw err;
+      console.log('Edit/index.tsx 创建成功');
+    });
+  }
+
+});
+//#endregion
+
+
+//#region Edit/config/column.txt
+fs.readFile(EditConfigColumnTxtFilePath, 'utf8', (err, data) => {
+  if (err) {
+    console.error(`Error reading file: ${err}`);
+    return;
+  }
+
+
+  const filePathSearch = path.resolve(__dirname, dirName, 'Edit/config/column.tsx');
+
+  // 检查目录是否存在
+  const dirPathSearch = path.dirname(filePathSearch);
+
+  if (!fs.existsSync(dirPathSearch)) {
+    // 创建目录
+    fs.mkdir(dirPathSearch, { recursive: true }, (err) => {
+      if (err) throw err;
+      console.log(`目录 ${dirPathSearch} 创建成功`);
+      // 写入文件
+      fs.writeFile(filePathSearch, data, (err) => {
+        if (err) throw err;
+        console.log('Edit/config/column.tsx 创建成功');
+      });
+    });
+  } else {
+    // 目录已存在，直接写入文件
+    fs.writeFile(filePathSearch, data, (err) => {
+      if (err) throw err;
+      console.log('Edit/config/column.tsx 创建成功');
+    });
+  }
+
+});
+//#endregion
+
+//#region Edit/config/formList.txt
+fs.readFile(EditConfigFormListTxtFilePath, 'utf8', (err, data) => {
+  if (err) {
+    console.error(`Error reading file: ${err}`);
+    return;
+  }
+
+
+  const filePathSearch = path.resolve(__dirname, dirName, 'Edit/config/formList.tsx');
+
+  // 检查目录是否存在
+  const dirPathSearch = path.dirname(filePathSearch);
+
+  if (!fs.existsSync(dirPathSearch)) {
+    // 创建目录
+    fs.mkdir(dirPathSearch, { recursive: true }, (err) => {
+      if (err) throw err;
+      console.log(`目录 ${dirPathSearch} 创建成功`);
+      // 写入文件
+      fs.writeFile(filePathSearch, data, (err) => {
+        if (err) throw err;
+        console.log('Edit/config/formList.tsx 创建成功');
+      });
+    });
+  } else {
+    // 目录已存在，直接写入文件
+    fs.writeFile(filePathSearch, data, (err) => {
+      if (err) throw err;
+      console.log('Edit/config/formList.tsx 创建成功');
+    });
+  }
+
+});
+//#endregion
+
+//#region Edit/components/DetailsModal/index.txt
+fs.readFile(EditComponentsDetailsModalIdeTxtFilePath, 'utf8', (err, data) => {
+  if (err) {
+    console.error(`Error reading file: ${err}`);
+    return;
+  }
+
+
+  const filePathSearch = path.resolve(__dirname, dirName, 'Edit/components/DetailsModal/index.tsx');
+
+  // 检查目录是否存在
+  const dirPathSearch = path.dirname(filePathSearch);
+
+  if (!fs.existsSync(dirPathSearch)) {
+    // 创建目录
+    fs.mkdir(dirPathSearch, { recursive: true }, (err) => {
+      if (err) throw err;
+      console.log(`目录 ${dirPathSearch} 创建成功`);
+      // 写入文件
+      fs.writeFile(filePathSearch, data, (err) => {
+        if (err) throw err;
+        console.log('Edit/components/DetailsModal/index.tsx 创建成功');
+      });
+    });
+  } else {
+    // 目录已存在，直接写入文件
+    fs.writeFile(filePathSearch, data, (err) => {
+      if (err) throw err;
+      console.log('Edit/components/DetailsModal/index.tsx 创建成功');
+    });
+  }
+
+});
+//#endregion
+
+//#region Edit/components/DetailsModal/config/formList.txt
+fs.readFile(EditComponentsDetailsModalConfigFormListTxtFilePath, 'utf8', (err, data) => {
+  if (err) {
+    console.error(`Error reading file: ${err}`);
+    return;
+  }
+
+
+  const filePathSearch = path.resolve(__dirname, dirName, 'Edit/components/DetailsModal/config/formList.tsx');
+
+  // 检查目录是否存在
+  const dirPathSearch = path.dirname(filePathSearch);
+
+  if (!fs.existsSync(dirPathSearch)) {
+    // 创建目录
+    fs.mkdir(dirPathSearch, { recursive: true }, (err) => {
+      if (err) throw err;
+      console.log(`目录 ${dirPathSearch} 创建成功`);
+      // 写入文件
+      fs.writeFile(filePathSearch, data, (err) => {
+        if (err) throw err;
+        console.log('Edit/components/DetailsModal/config/formList.tsx 创建成功');
+      });
+    });
+  } else {
+    // 目录已存在，直接写入文件
+    fs.writeFile(filePathSearch, data, (err) => {
+      if (err) throw err;
+      console.log('Edit/components/DetailsModal/config/formList.tsx 创建成功');
+    });
+  }
+
+});
+//#endregion
+

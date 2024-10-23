@@ -1,17 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Collapse, Form, message, Space, Tabs } from 'antd';
 import { history, useParams } from 'umi';
 import { HhTable, BackBar, HhForm, HhTitleRow, HhButtonModal } from '@haohan/ui';
-import { useGetById, useHhForm, useHhRequest } from '@haohan/hooks';
+import { useGetById, useHhForm, useHhRequest, useHhTable } from '@haohan/hooks';
 import i18next from '@haohan/utils/es/hhI18next';
-import {
-  CostSharingGetById,
-  CostSharingGetListByCostSharingDetail,
-  CostSharingSaveCostSharing,
-} from '@/services/Fi/CostSharing';
+import { CostSharingGetById, CostSharingSaveCostSharing } from '@/services/Fi/CostSharing';
 import DetailsModal from './components/DetailsModal';
 import getFormList from './config/formList';
 import getColumn from './config/column';
+// import useHhTable from '@/hooks/useHhTable';
 
 const Edit = () => {
   const params: { id: string } = useParams();
@@ -32,6 +29,43 @@ const Edit = () => {
     initFormData: {},
   });
 
+  const { dataSource, setDateSource, tableForm, getTableFormDataSource,setDataSourceOnlyHhId,runTableValidateFields,setTableFormDataSource } = useHhTable({
+    initData: [
+      {
+        hhId: '1',
+        id: '0001',
+        prodOrderNo: '0001',
+        price: '100',
+        name: '我是数据1',
+        factoryCode:'HH',
+         factoryName:'我是工厂'
+      },
+      {
+        hhId: '2',
+        id: '0002',
+        prodOrderNo: '0002',
+        price: '100',
+        name: '我是数据2',
+      },
+      {
+       
+        id: '0003',
+        prodOrderNo: '0003',
+        price: '25',
+        name: '我是数据2',
+      },
+    ],
+    editable:true,
+    primaryKey: 'hhId',
+    
+  });
+
+  console.log(dataSource);
+
+  useEffect(()=>{
+    setDataSourceOnlyHhId(dataSource)
+  },[])
+
   // 获取详情
   const getById = () => {
     const param: API.CostSharingGetByIdParams = {
@@ -41,6 +75,10 @@ const Edit = () => {
   };
 
   const onSave = async () => {
+
+    
+    if (!(await runTableValidateFields())) return;
+
     if (!(await runValidateFields(form))) return;
 
     const param: API.CostParamDto = {
@@ -64,11 +102,13 @@ const Edit = () => {
     });
   };
 
+
+
   useGetById(() => {
     getById();
   });
 
-  const column = getColumn({ formData, isDisableForm, getById });
+  const column = getColumn({ formData, isDisableForm, getById,getTableFormDataSource ,setTableFormDataSource});
 
   const formList = getFormList({
     formData,
@@ -104,7 +144,7 @@ const Edit = () => {
 
       <Collapse defaultActiveKey={['1']}>
         <Collapse.Panel header={i18next.t('基本信息')} key="1">
-          <HhForm formProps={{ form, onValuesChange }} hasSet={true} formData={formList}  />
+          <HhForm formProps={{ form, onValuesChange }} hasSet={true} formData={formList} />
         </Collapse.Panel>
       </Collapse>
 
@@ -117,13 +157,19 @@ const Edit = () => {
               parentData={{}}
               onOk={async () => getById()}
             ></HhButtonModal>
+
+            <Button onClick={getTableFormDataSource}>获取数据</Button>
           </Space>
-          <HhTable
-            tableProps={{ isLoading: isLoading || isLoadingForm }}
-            hasSet={true}
-            dataSource={formData?.details || []}
-            column={column}
-          />
+
+          {/* <Form form={tableForm}> */}
+            <HhTable
+            tableForm={tableForm}
+              tableProps={{ isLoading: isLoading || isLoadingForm }}
+              hasSet={true}
+              dataSource={dataSource}
+              column={column}
+            />
+          {/* </Form> */}
         </Tabs.TabPane>
       </Tabs>
     </div>
