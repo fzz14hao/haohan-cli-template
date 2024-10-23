@@ -4,13 +4,15 @@ import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
 
+const PACHAGE = require('../package.json');
+
 const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
   hash: true,
   history: { type: 'hash' },
-  base: '/ui', // 部署目录或者 dev的路由前缀
-  publicPath: process.env.NODE_ENV === 'production' ? '/ui/' : '/',
+  base: `/${PACHAGE.name}`, // 部署目录或者 dev的路由前缀
+  publicPath: process.env.NODE_ENV === 'production' ? `/${PACHAGE.name}` : '/',
   antd: {},
   dva: {
     hmr: true,
@@ -63,28 +65,28 @@ export default defineConfig({
     {
       //erp user api 文档
       requestLibPath: "import { request } from 'umi'",
-      schemaPath: 'http://10.9.0.11:5010/user/swagger/0.8.1.00/swagger.json',
+      schemaPath: 'http://10.9.0.15:5010/user/swagger/0.8.1.00/swagger.json',
       mock: false,
       projectName: 'Users',
     },
     {
       //BasicInfo
       requestLibPath: "import { request } from 'umi'",
-      schemaPath: 'http://10.9.0.11:5030/basicinfo/swagger/0.8.1.00/swagger.json',
+      schemaPath: 'http://10.9.0.15:5030/basicinfo/swagger/0.8.1.00/swagger.json',
       mock: false,
       projectName: 'Basicinfo',
     },
     {
       //mos
       requestLibPath: "import { request } from 'umi'",
-      schemaPath: 'http://10.9.0.11:5046/mos/swagger/0.8.1.00/swagger.json',
+      schemaPath: 'http://10.9.0.15:5046/mos/swagger/0.8.1.00/swagger.json',
       mock: false,
       projectName: 'Mos',
     },
     {
       //Fi
       requestLibPath: "import { request } from 'umi'",
-      schemaPath: 'http://10.9.0.11:5059/fi/swagger/1.0.0.00/swagger.json',
+      schemaPath: 'http://10.9.0.115:5059/fi/swagger/1.0.0.00/swagger.json',
       mock: false,
       projectName: 'Fi',
     },

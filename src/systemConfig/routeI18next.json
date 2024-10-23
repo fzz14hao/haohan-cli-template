@@ -1,0 +1,32 @@
+[
+  {
+    "wordKey": "listOfExamples-ui",
+    "path": "/ui/demo/index",
+    "pageId": "xxui001",
+    "parentWordKey": "listOfExamples-ui",
+    "zhCN": "示例列表",
+    "type": "title",
+    "platform": "需改你的平台",
+    "typeName": "ui_demo_index"
+  },
+  {
+    "wordKey": "listOfExamples-ui",
+    "path": "/ui/demo2/index",
+    "pageId": "xxui1001",
+    "parentWordKey": "listOfExamples-ui",
+    "zhCN": "示例列表",
+    "type": "title",
+    "platform": "需改你的平台",
+    "typeName": "ui_demo2_index"
+  },
+  {
+    "wordKey": "edit-ui",
+    "path": "/ui/demo2/edit",
+    "pageId": "xxui1002",
+    "parentWordKey": "edit-ui",
+    "zhCN": "编辑",
+    "type": "title",
+    "platform": "需改你的平台",
+    "typeName": "ui_demo2_edit"
+  }
+]

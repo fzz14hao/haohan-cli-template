@@ -7,8 +7,8 @@
  * https://pro.ant.design/docs/deploy
  */
 // const dev = 'http://120.76.194.61:6500';
- const dev='http://10.9.0.15:6500'
-//const dev='https://erppre.pheyma.com'
+//  const dev='http://10.9.0.15:6500'
+const dev = 'https://erppre.pheyma.com';
 //  const dev='http://localhost:6500'
 
 export default {
@@ -40,7 +40,7 @@ export default {
     },
     '/po/api': {
       // target: 'http://10.9.1.198:5045',
-      target:'http://10.9.0.15:5055',
+      target: 'http://10.9.0.15:5055',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
@@ -59,7 +59,6 @@ export default {
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
-
   },
   test: {
     '/api/': {

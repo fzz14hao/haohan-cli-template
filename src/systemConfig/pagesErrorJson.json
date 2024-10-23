@@ -1,0 +1,15 @@
+{
+  "src/pages/demo2/edit/index.tsx": [
+    {
+      "identifierName": "text",
+      "line": 70,
+      "type": "Identifier",
+      "text": ""
+    },
+    {
+      "line": 143,
+      "type": "ConditionalExpression",
+      "text": ""
+    }
+  ]
+}
