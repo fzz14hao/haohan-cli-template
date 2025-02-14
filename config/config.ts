@@ -12,7 +12,7 @@ export default defineConfig({
   hash: true,
   history: { type: 'hash' },
   base: `/${PACHAGE.name}`, // 部署目录或者 dev的路由前缀
-  publicPath: process.env.NODE_ENV === 'production' ? `/${PACHAGE.name}` : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? `/${PACHAGE.name}/` : '/',
   antd: {},
   dva: {
     hmr: true,
