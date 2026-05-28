@@ -1,70 +1,76 @@
-import { useState } from 'react';
-import { Button, Divider, Collapse, Form, message } from 'antd';
-import { history, useParams } from 'umi';
-import { HhTable, BackBar, HhForm, HhTitleRow, SearchArPeriod } from '@haohan/ui';
-import { useGetById, useHhForm, useHhRequest } from '@haohan/hooks';
-import i18next from '@haohan/utils/es/hhI18next';
-
+import { Button, message, Space, Tabs } from 'antd';
+import { useParams, history } from 'umi';
 import {
-  CostSharingCancelCostExpense,
-  CostSharingCostExpense,
-  CostSharingGetById,
-  CostSharingGetListByCostSharingDetail,
-  CostSharingSaveCostSharing,
-} from '@/services/Fi/CostSharing';
-import DetailsModal from './components/DetailsModal';
+  HhTitleRow,
+  HhTabsAndProForm,
+  HhBackBar,
+  HhPageDetailsFlexColumn,
+  HhTable,
+  HhButtonModal,
+} from '@haohan/ui';
+import { useGetById, useHhRequest, useHhProForm, useHhTable } from '@haohan/hooks';
+import i18next from '@haohan/utils/es/hhI18next';
 import getFormList from './config/formList';
-import getColumn from './config/column';
+import getColumns from './config/columns';
+import getOtherFormList from './config/otherFormList';
+import { TabItemTypeProps } from '@haohan/ui/es/Components/HhTabsAndProForm/TabsAndFormProps';
+import AddModal from './components/AddModal';
+import { ComponentDesignBaseAddOrUpdate, ComponentDesignBaseGetById } from '@/services/Mos/ComponentDesignBase';
 
-const { Panel } = Collapse;
-
-const CostExpenseEdit = () => {
+const init = {};
+const EditDemo2 = () => {
   const params: { id: string } = useParams();
+  //通用内部请求函数
   const { isLoading, runRequest } = useHhRequest();
 
-  const {
-    form,
-    formData,
-    isDisableForm: isEdit,
-    setDisableForm: setIsEdit,
-    onValuesChange,
-    setFieldsValue,
-    getByDetails,
-    submitForm,
-    runValidateFields,
-  } = useHhForm<any>({
-    initFormData: {},
-  });
+  //HHProForm 表单hooks
+  const { hhProForm, hhProFormData, actions, isDisable, defaultActiveKey, setDefaultActiveKey } =
+    useHhProForm({
+      initFormData: init,
+      initDisable: true,
+    });
 
-  const [visible, setVisible] = useState<boolean>(false);
-  const [detailsData, setDetailsData] = useState<any[]>([]);
-  const [visibleArPeriod, setVisibleArPeriod] = useState<boolean>(false);
+  //HhTable 表格hooks
+  const { dataSource, setDataSource } = useHhTable<API.ComponentDto>({ initData: [] });
 
   // 获取详情
   const getById = () => {
-    const param: API.CostSharingGetByIdParams = {
-      id: params.id,
+    const param = {
+      id: params.id as any,
     };
-    getByDetails(CostSharingGetById(param));
+    //Todo 替换替换为获取详情函数
+    runRequest(ComponentDesignBaseGetById(param)).then((res) => {
+      if (res) {
+        actions.setProFormData(res);
+
+        // 处理详情数据
+        if (res.details) {
+          setDataSource(res.details || []);
+        }
+      }
+    });
   };
 
-  const onSave = async () => {
-    if (!(await runValidateFields(form))) return;
+  useGetById(() => {
+    getById();
+  });
 
-    const param: API.CostParamDto = {
+  const onSave = async () => {
+    if (!(await actions.validateFields())) return;
+
+    const param = {
       id: '0',
-      ...formData,
+      ...actions.getFieldsValue(),
     };
-    submitForm<API.CostSharingDtoApiResult, API.CostSharingDto>(
-      CostSharingSaveCostSharing(param),
-    ).then((res) => {
+    //Todo 替换替换为保存函数
+    runRequest(ComponentDesignBaseAddOrUpdate(param)).then((res) => {
       if (res) {
-        let text = '新增成功';
+        let text = i18next.t('$HHf0bc.addedsuccessfully.新增成功$HH');
         if (params.id !== '0') {
-          text = '更新成功';
+          text = i18next.t('$HHc4dc.updatesuccessful.更新成功$HH');
           getById();
         } else {
-          history.replace(`/demo2/edit/${res.id}`);
+          history.replace(`/demo2/edit/${res}`);
         }
 
         message.success(i18next.t(text));
@@ -72,135 +78,106 @@ const CostExpenseEdit = () => {
     });
   };
 
-  const onCostExpense = () => {
-    runRequest<API.BooleanApiResult, boolean>(
-      CostSharingCostExpense({ id: formData?.id }, { showMsg: true }),
-    ).then((res) => {
-      if (res) {
-        message.success('分摊成功');
-        getById();
-      }
-    });
-  };
-
-  const onCancelExpense = () => {
-    runRequest<API.BooleanApiResult, boolean>(
-      CostSharingCancelCostExpense({ id: formData?.id }, { showMsg: true }),
-    ).then((res) => {
-      if (res) {
-        message.success('取消成功');
-        getById();
-      }
-    });
-  };
-
-  const onEdit = (value: any, record: any) => {
-    runRequest<
-      API.CostSharProdOrderCostDetailDtoListApiResult,
-      API.CostSharProdOrderCostDetailDto[]
-    >(CostSharingGetListByCostSharingDetail({ detailId: record?.id }, { showMsg: true })).then(
-      (res) => {
-        if (res) {
-          setVisible(true);
-          setDetailsData(res);
-        }
-      },
-    );
-  };
-
-  const onSelectCallBack = (value: any, allValues: any) => {
-    const { financialDate, id } = allValues;
-
-    const obj = {
-      periodId: id,
-      financialDate,
-    };
-    setFieldsValue({ ...formData, ...obj });
-  };
-
-  useGetById(() => {
-    getById();
-  });
-
-  const column = getColumn({ basicInfo: formData, onEdit });
-
+  // 表单列表
   const formList = getFormList({
-    basicInfo: formData,
-    setData: setFieldsValue,
-    isEdit,
-    setVisibleArPeriod,
+    hhProFormData,
+    setFieldsValue: actions.setProFormData,
+    isDisable,
   });
+  // 其他表单列表
+  const otherFormList = getOtherFormList({
+    hhProFormData,
+    setFieldsValue: actions.setProFormData,
+    isDisable,
+  });
+
+  // 初始表单tab项
+  const initialItems: TabItemTypeProps[] = [
+    {
+      label: i18next.tEn('$HHe144.basicInfo.Basic Info$HH'),
+      key: 'basicInfo',
+      formItems: formList,
+      actions: actions,
+      antdFormProps: { form: hhProForm },
+    },
+    {
+      label: i18next.tEn('$HHe145.OtherInfo.Other Info$HH'),
+      key: 'otherInfo',
+      formItems: otherFormList,
+      actions: actions,
+      antdFormProps: { form: hhProForm },
+    },
+  ];
+
+  //  明显表格列配置
+  const columns = getColumns({});
 
   return (
-    <div>
-      <BackBar />
-      <HhTitleRow
-        autoTitle
-        title={params.id != '0' ? i18next.t('编辑') : i18next.t('新建')}
-        renderRight={
-          <>
-            <Button type="primary" onClick={() => setIsEdit(!isEdit)}>
-              {i18next.t(isEdit ? '编辑' : '取消编辑')}
-            </Button>
-            {formData?.status === 1 && (
-              <Button type="primary" onClick={onCancelExpense} disabled={isEdit}>
-                {i18next.t('取消分摊')}
+    <HhPageDetailsFlexColumn>
+      {/* header区域  */}
+      <HhPageDetailsFlexColumn.Header>
+        {/* 返回 */}
+        <HhBackBar />
+        {/* 标题 */}
+        <HhTitleRow
+          autoTitle
+          title={i18next.tEn('$HH2763.demo2Detail.Demo2 Detail$HH')}
+          renderRight={
+            <>
+              {/* 更多操作按钮区域  固定：编辑 保存*/}
+              {/* 启动编辑禁止编辑 */}
+              <Button type="primary" onClick={actions.setDisableFormToggle}>
+                {isDisable
+                  ? i18next.tEn('$HHe51d.edit.Edit$HH')
+                  : i18next.tEn('$HH9b30.cancel.Cancel$HH')}
               </Button>
-            )}
-            {formData?.status === 0 && (
-              <Button type="primary" onClick={onCostExpense} disabled={isEdit}>
-                {i18next.t('分摊')}
+              {/* 保存按钮 */}
+              <Button disabled={isDisable} type="primary" loading={isLoading} onClick={onSave}>
+                {i18next.tEn('$HHa14a.save.Save$HH')}
               </Button>
-            )}
+              {/* 重置按钮 */}
+              <Button
+                disabled={isDisable}
+                type="primary"
+                loading={isLoading}
+                onClick={actions.resetFields}
+              >
+                {i18next.tEn('$HHa1s.Reset.Reset$HH')}
+              </Button>
+            </>
+          }
+        />
 
-            <Button
-              disabled={isEdit || formData?.status === 1}
-              type="primary"
-              onClick={() => {
-                onSave();
-              }}
-            >
-              {i18next.t('保存')}
-            </Button>
-          </>
-        }
-      />
+        {/* 表单区域 */}
+        <HhTabsAndProForm
+          defaultActiveKey={defaultActiveKey}
+          changeActiveKey={setDefaultActiveKey}
+          tabsItems={initialItems}
+          isLoading={isLoading}
+        ></HhTabsAndProForm>
+      </HhPageDetailsFlexColumn.Header>
 
-      <Collapse defaultActiveKey={['1']}>
-        <Panel header={i18next.t('基本信息')} key="1">
-          <HhForm formProps={{ form, onValuesChange }} hasSet={true} formData={formList} />
-        </Panel>
-      </Collapse>
-
-      <Divider />
-
-      <HhTable
-        tableProps={{ isLoading }}
-        hasSet={true}
-        dataSource={formData?.details || []}
-        column={column}
-      />
-
-      {visible && (
-        <DetailsModal
-          visible={visible}
-          setVisible={setVisible}
-          data={detailsData}
-          onOk={() => setVisible(false)}
-        ></DetailsModal>
-      )}
-      {visibleArPeriod && (
-        <SearchArPeriod
-          visible={visibleArPeriod}
-          selectCallBack={onSelectCallBack}
-          onIsModalShow={setVisibleArPeriod}
-          otherParam={{
-            factoryId: formData?.factoryId,
-          }}
-        ></SearchArPeriod>
-      )}
-    </div>
+      {/* body区域  */}
+      <HhPageDetailsFlexColumn.Body>
+        <Tabs>
+          <Tabs.TabPane key="details" tab={i18next.tEn('Details')}>
+            {/* 明显表格区域 */}
+            <Space>
+              <HhButtonModal Components={AddModal} parentData={{}}>
+                {i18next.tEn('Add')}
+              </HhButtonModal>
+            </Space>
+            <HhTable
+              tableProps={{ isLoading }}
+              hasSet={true}
+              dataSource={dataSource}
+              column={columns}
+            />
+          </Tabs.TabPane>
+        </Tabs>
+      </HhPageDetailsFlexColumn.Body>
+    </HhPageDetailsFlexColumn>
   );
 };
 
-export default CostExpenseEdit;
+export default EditDemo2;

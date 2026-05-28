@@ -7,38 +7,23 @@ const getFormList = (props?: any) => {
   const data: HhProFormItemsProps[] = [
     {
       key: 1,
-      name: 'clientId',
-      label: i18next.tEn('$HHba6c.clientId.Client ID$HH'),
+      name: 'fileId',
+      label: i18next.tEn('$HHba6c.fileId.File ID$HH'),
       componentType: 'Input',
       disabled: true,
     },
 
     {
       key: 2,
-      name: 'msgCode',
-      label: i18next.tEn('$HH99aa.msgCode.Msg Code$HH'),
+      name: 'file1',
+      label: i18next.tEn('$HH919aa.file1.File 1$HH'),
       componentType: 'Input',
       disabled: isDisable,
     },
     {
       key: 3,
-      name: 'msgDesc',
-      label: i18next.tEn('$HH3f54.msgDesc.Msg Desc$HH'),
-      componentType: 'Input',
-      disabled: isDisable,
-    },
-
-    {
-      key: 5,
-      name: 'msgSubject',
-      label: i18next.tEn('$HH2f69.msgSubject.Msg Subject$HH'),
-      componentType: 'Input',
-      disabled: isDisable,
-    },
-    {
-      key: 6,
-      name: 'dateTime',
-      label: i18next.tEn('$HH9c0c.dateTime.Date Time$HH'),
+      name: 'file2',
+      label: i18next.tEn('$HH929aa.file2.File 2$HH'),
       componentType: 'DatePicker',
       disabled: isDisable,
     },

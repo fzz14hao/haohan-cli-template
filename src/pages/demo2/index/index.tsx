@@ -1,128 +1,108 @@
-import { history } from 'umi';
-import { HhKeepAlive, HhTable, HhTitleRow, HhSearchBar } from '@haohan/ui';
-import { useHhRequest, useHhSearch, useHhTable } from '@haohan/hooks';
-
-import i18next from '@haohan/utils/es/hhI18next';
-import getColumn from './config/column';
-import { Button, message } from 'antd';
-import {
-  CostSharingCancelCostExpense,
-  CostSharingCostExpense,
-  CostSharingDelete,
-  CostSharingGetListPage,
-} from '@/services/Fi/CostSharing';
 import { useMemo } from 'react';
+import { HhKeepAlive, HhPageFlexColumn, HhProSearch, HhTable, HhTitleRow } from '@haohan/ui';
+import { useHhTable, useHhProSearch } from '@haohan/hooks';
+import { ComponentDesignBaseGetPageListByParm } from '@/services/Mos/ComponentDesignBase';
+import getColumn from './config/columns';
+import i18next from '@haohan/utils/es/hhI18next';
+import getSearchItems from './config/searchItems';
+import { Button } from 'antd';
+import { history } from 'umi';
 
-const CostExpense = () => {
-  const { runRequest } = useHhRequest();
-
+const initialValues = {};
+const DemoIndex = () => {
   const {
     dataSource,
     removeIndex,
     pageIndex,
     setPageIndex,
     pageSize,
+    setPageSize,
     onLoadMore,
     onLoadAll,
     isLoading,
     total,
     getTableData,
-    onTableDelete,
-  } = useHhTable<API.CostSharingDto>({ initData: [] });
+    startRetrieveData,
+  } = useHhTable<API.ComponentDto>({ initData: [] });
 
-  const { keyword, onSearch } = useHhSearch<any>({
-    callback: getList,
-    pageIndex,
-    setPageIndex,
-    pageSize,
-    isLoading,
+  const { actions, proSearchForm, proSearchData, proSearchDataRef } = useHhProSearch({
+    initialValues,
   });
 
-  function getList() {
-    const params: API.CostExpenseCondition = {
+  // 获取列表函数
+  const getList = async (queryParams?: any) => {
+    const params = {
       pageIndex,
       pageSize,
-      keyword,
+      ...proSearchDataRef.current,
+      ...queryParams,
     };
-
-    getTableData<API.CostSharingDtoListApiResult, API.CostSharingDto[]>(
-      CostSharingGetListPage(params),
-    );
-  }
-
-  const onCostExpense = (id: string) => {
-    runRequest<API.BooleanApiResult, boolean>(
-      CostSharingCostExpense({ id }, { showMsg: true }),
-    ).then((res) => {
-      if (res) {
-        message.success('分摊成功');
-        getList();
-      }
-    });
-  };
-  const onCancelExpense = (id: string) => {
-    runRequest<API.BooleanApiResult, boolean>(
-      CostSharingCancelCostExpense({ id }, { showMsg: true }),
-    ).then((res) => {
-      if (res) {
-        message.success('取消成功');
-        getList();
-      }
-    });
+    //ComponentDesignBaseGetPageListByParm是获取数据的接口，如果用户指定了换成用户的接口
+    getTableData(ComponentDesignBaseGetPageListByParm(params));
   };
 
-  // 点击编辑
-  const onEdit = (value: any, record: any) => {
-    history.push(`/demo2/edit/${record.id}`);
+  const onClickAdd = () => {
+    history.push('/demo2/edit/0');
   };
 
-  // 点击删除
-  const onDel = (value: any, record: any, index: number) => {
-    onTableDelete({
-      record: { ids: [record.id] },
-      deleteFn: CostSharingDelete,
-      index,
-    });
-  };
+  const columns = useMemo(
+    () => getColumn({ startRetrieveData: () => startRetrieveData(getList) }),
+    [],
+  );
 
-  const column = useMemo(() => getColumn({ onEdit, onDel, onCostExpense, onCancelExpense }), []);
+  const searchItems = useMemo(
+    () => getSearchItems({ proSearchData, actions }),
+    [proSearchData, actions],
+  );
 
   return (
-    <div>
-      <HhTitleRow autoTitle title={'成本分摊'} />
-      <HhSearchBar
-        placeholder={i18next.tt('请输入')}
-        onSearch={onSearch}
-        value={keyword}
-        renderRight={
-          <>
-            <Button
-              type="primary"
-              onClick={() => {
-                history.push('/demo2/edit/0');
-              }}
-            >
-              {i18next.t('新建')}
-            </Button>
-          </>
-        }
-      />
+    <HhPageFlexColumn>
+      {/* 固定布局wrapper */}
+      {/* 标题 */}
+      <HhTitleRow autoTitle title={i18next.tEn('$HH125c.demo.Demo$HH')} />
+
+      {/* 搜索 */}
+      <HhProSearch
+        actions={actions}
+        form={proSearchForm}
+        queryRequest={getList}
+        searchItems={searchItems}
+        keywordPlaceholder={i18next.t(
+          '$HHac5c.pleaseEnterOrderNumber/customerOrderNumber.请输入订单编号/客户订单号$HH',
+        )}
+        pageSize={pageSize}
+        pageIndex={pageIndex}
+        setPageSize={setPageSize}
+        setPageIndex={setPageIndex}
+      >
+        <>
+          {/* 更多操作按钮区域 */}
+          {/* 添加 按钮 点击跳转到编辑页面 */}
+          <Button type="primary" onClick={onClickAdd}>
+            {i18next.tEn('$HHvdfc.Add.Add$HH')}
+          </Button>
+        </>
+      </HhProSearch>
+
+      {/* 表格区域 */}
       <HhTable
         tableProps={{ isLoading }}
         hasSet={true}
         dataSource={dataSource}
-        column={column}
+        column={columns}
         pageIndex={pageIndex}
         onLoadMore={onLoadMore}
         total={total}
         onLoadAll={onLoadAll}
       />
-    </div>
+    </HhPageFlexColumn>
   );
 };
 
-export default () => (
-  <HhKeepAlive>
-    <CostExpense />
-  </HhKeepAlive>
-);
+export default () => {
+  return (
+    <HhKeepAlive>
+      <DemoIndex></DemoIndex>
+    </HhKeepAlive>
+  );
+};
