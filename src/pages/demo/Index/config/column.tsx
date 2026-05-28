@@ -1,7 +1,4 @@
 import { HhButtonModal, HhDeleteButton, HhStatusTag } from '@haohan/ui';
-import { renderDate } from '@haohan/utils';
-import { Button } from 'antd';
-
 import i18next from '@haohan/utils/es/hhI18next';
 import AddModal from '../components/AddModal';
 import { ComponentDelete } from '@/services/Mos/Component';

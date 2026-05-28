@@ -4,6 +4,9 @@ import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
 
+
+const defaultTheme = require('@haohan/ui/es/config/theme'); 
+
 const PACHAGE = require('../package.json');
 
 const { REACT_APP_ENV } = process.env;
@@ -41,7 +44,7 @@ export default defineConfig({
   routes: routes,
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
-    'primary-color': defaultSettings.primaryColor,
+    ...defaultTheme.defaultTheme
   },
   // esbuild is father build tools
   // https://umijs.org/plugins/plugin-esbuild

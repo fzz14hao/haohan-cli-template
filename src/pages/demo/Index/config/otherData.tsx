@@ -1,4 +1,4 @@
-import {DatePicker} from 'antd'
+import { DatePicker } from 'antd';
 import { HhGroupSearch, SearchFactory } from '@haohan/ui';
 import i18next from '@haohan/utils/es/hhI18next';
 import { FactoryGetPageListByParmNoPermission } from '@/services/BasicInfo/Factory';
@@ -10,7 +10,6 @@ const getOtherData = (props?: any) => {
       key: 1,
       label: i18next.t('工厂'),
       name: 'factoryCode',
-
       render: () => {
         return (
           <HhGroupSearch
@@ -35,7 +34,7 @@ const getOtherData = (props?: any) => {
       },
     },
     {
-      key: 1,
+      key: 3,
       name: 'createTime',
       label: i18next.t('创建日期'),
       render: () => {

@@ -116,7 +116,6 @@ const getFormList = (props?: any) => {
             {formData?.matGroupList?.map((el: any) => {
               return (
                 <Select.Option value={el.id}>
-                  {' '}
                   {el.matGroupCode + '-' + el.matGroupName}{' '}
                 </Select.Option>
               );
