@@ -26,10 +26,7 @@ const AddModal = (props: HhButtonModalProps) => {
     const params = {
       ...formData,
     };
-    submitForm<API.ComponentDesignBaseDtoApiResult, API.ComponentDesignBaseDto>(
-      ComponentDesignBaseAddOrUpdate(params),
-      { prohibit: false },
-    ).then((res) => {
+    submitForm(ComponentDesignBaseAddOrUpdate(params), { prohibit: false }).then((res) => {
       if (res) {
         setVisible(false);
         onOk && onOk();
@@ -48,20 +45,15 @@ const AddModal = (props: HhButtonModalProps) => {
 
   return (
     <DraggableModal
-      title={parentData?.id ? i18next.t('编辑') : i18next.t('新建')}
+      title={
+        parentData?.id ? i18next.tEn('$HH125c.demo.Edit$HH') : i18next.tEn('$HH12v.demo.Create$HH')
+      }
       visible={visible}
-      width={600}
       onCancel={() => setVisible(false)}
       onOk={onSave}
       okButtonProps={{ loading: isLoading }}
     >
-      <HhForm
-        hasSet
-        formProps={{ form, onValuesChange }}
-        formData={formList}
-        columnsNum={1}
-        labelColWidth={140}
-      />
+      <HhForm hasSet formProps={{ form, onValuesChange }} formData={formList} columnsNum={1} />
     </DraggableModal>
   );
 };

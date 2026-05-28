@@ -1,10 +1,20 @@
-import { useMemo, } from 'react';
-import { HhKeepAlive, HhTable, HhTitleRow } from '@haohan/ui';
-import { useHhTable, useHhSearch } from '@haohan/hooks';
-import { objToFlat, dateToDatestr } from '@haohan/utils';
+import { useMemo } from 'react';
+import {
+  HhButtonModal,
+  HhKeepAlive,
+  HhPageFlexColumn,
+  HhProSearch,
+  HhTable,
+  HhTitleRow,
+} from '@haohan/ui';
+import { useHhTable, useHhProSearch } from '@haohan/hooks';
 import { ComponentDesignBaseGetPageListByParm } from '@/services/Mos/ComponentDesignBase';
-import getColumn from './config/column';
-import Search from './components/Search';
+import getColumn from './config/columns';
+import i18next from '@haohan/utils/es/hhI18next';
+import AddModal from './components/AddModal';
+import getSearchItems from './config/searchItems';
+
+const initialValues = {};
 const DemoIndex = () => {
   const {
     dataSource,
@@ -12,70 +22,82 @@ const DemoIndex = () => {
     pageIndex,
     setPageIndex,
     pageSize,
+    setPageSize,
     onLoadMore,
     onLoadAll,
     isLoading,
     total,
     getTableData,
-    onTableDelete,
-    startRetrieveData
+    startRetrieveData,
   } = useHhTable<API.ComponentDto>({ initData: [] });
 
-  const { keyword, searchData, setSearchData, onSearch } = useHhSearch<any>({
-    callback: getList,
-    pageIndex,
-    setPageIndex,
-    pageSize,
-    isLoading,
+  const { actions, proSearchForm, proSearchData, proSearchDataRef } = useHhProSearch({
+    initialValues,
   });
 
-  // 获取列表
-  function getList() {
-    let newData = objToFlat(searchData, ['createTime'], [], {
-      createTime: ['startTime', 'endTime'],
-    });
-
-    newData = dateToDatestr(newData, ['startTime', 'endTime']);
-    const params: API.QueryParamDto = {
+  // 获取列表函数
+  const getList = async (queryParams?: any) => {
+    const params = {
       pageIndex,
       pageSize,
-      keyword,
-      ...searchData,
-      ...newData,
+      ...proSearchDataRef.current,
+      ...queryParams,
     };
-    getTableData<API.ComponentDesignBaseDtoListApiResult, API.CompoQueryParamDto[]>(
-      ComponentDesignBaseGetPageListByParm(params),
-    );
-  }
+    //ComponentDesignBaseGetPageListByParm是获取数据的接口，如果用户指定了换成用户的接口
+    getTableData(ComponentDesignBaseGetPageListByParm(params));
+  };
 
+  const columns = useMemo(
+    () => getColumn({ startRetrieveData: () => startRetrieveData(getList) }),
+    [],
+  );
 
-
-
-  const column = useMemo(() => getColumn({ startRetrieveData:()=>startRetrieveData(getList)}), []);
+  const searchItems = useMemo(
+    () => getSearchItems({ proSearchData, actions }),
+    [proSearchData, actions],
+  );
 
   return (
-    <div>
-      <HhTitleRow autoTitle title='部位定义' />
+    <HhPageFlexColumn>
+      {/* 固定布局wrapper */}
+      {/* 标题 */}
+      <HhTitleRow autoTitle title={i18next.tEn('$HH125c.demo.Demo$HH')} />
 
-      <Search
-        onSearch={onSearch}
-        keyword={keyword}
-        setAllSearchValue={setSearchData}
-      />
+      {/* 搜索 */}
+      <HhProSearch
+        actions={actions}
+        form={proSearchForm}
+        queryRequest={getList}
+        searchItems={searchItems}
+        keywordPlaceholder={i18next.t(
+          '$HHac5c.pleaseEnterOrderNumber/customerOrderNumber.请输入订单编号/客户订单号$HH',
+        )}
+        pageSize={pageSize}
+        pageIndex={pageIndex}
+        setPageSize={setPageSize}
+        setPageIndex={setPageIndex}
+      >
+        <>
+          {/* 更多操作按钮区域 */}
+          {/* 弹窗添加 */}
+          <HhButtonModal Components={AddModal} onOk={getList}>
+            {i18next.tEn('$HHvdfc.Add.Add$HH')}
+          </HhButtonModal>
+        </>
+      </HhProSearch>
 
+      {/* 表格区域 */}
       <HhTable
         tableProps={{ isLoading }}
-        hasSet
+        hasSet={true}
         dataSource={dataSource}
-        column={column}
+        column={columns}
         pageIndex={pageIndex}
         onLoadMore={onLoadMore}
         total={total}
         onLoadAll={onLoadAll}
       />
-
-     
-    </div>
+    </HhPageFlexColumn>
   );
 };
 
