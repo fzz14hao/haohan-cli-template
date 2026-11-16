@@ -71,7 +71,7 @@ export default [
     ],
   },
 
-  // demo
+  // demo2
   {
     path: '/demo2',
     name: '示例2',
@@ -98,6 +98,8 @@ export default [
       },
     ],
   },
+
+
 
   {
     component: '404',

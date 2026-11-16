@@ -15,7 +15,10 @@ import getColumns from './config/columns';
 import getOtherFormList from './config/otherFormList';
 import { TabItemTypeProps } from '@haohan/ui/es/Components/HhTabsAndProForm/TabsAndFormProps';
 import AddModal from './components/AddModal';
-import { ComponentDesignBaseAddOrUpdate, ComponentDesignBaseGetById } from '@/services/Mos/ComponentDesignBase';
+import {
+  ComponentDesignBaseAddOrUpdate,
+  ComponentDesignBaseGetById,
+} from '@/services/Mos/ComponentDesignBase';
 
 const init = {};
 const EditDemo2 = () => {
@@ -31,7 +34,7 @@ const EditDemo2 = () => {
     });
 
   //HhTable 表格hooks
-  const { dataSource, setDataSource } = useHhTable<API.ComponentDto>({ initData: [] });
+  const { dataSource, setDataSource } = useHhTable({ initData: [] });
 
   // 获取详情
   const getById = () => {

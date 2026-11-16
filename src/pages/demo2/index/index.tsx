@@ -23,7 +23,7 @@ const DemoIndex = () => {
     total,
     getTableData,
     startRetrieveData,
-  } = useHhTable<API.ComponentDto>({ initData: [] });
+  } = useHhTable({ initData: [] });
 
   const { actions, proSearchForm, proSearchData, proSearchDataRef } = useHhProSearch({
     initialValues,

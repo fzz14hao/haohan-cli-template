@@ -1,4 +1,4 @@
-import { HhGroupSearch, SearchFactory } from '@haohan/ui';
+import { HhGroupSearch, SearchFactory,HhQueryDatePicker } from '@haohan/ui';
 import i18next from '@haohan/utils/es/hhI18next';
 import { FactoryGetPageListByParmNoPermission } from '@/services/BasicInfo/Factory';
 import { HhProSearchItemProps } from '@haohan/ui/es/Components/HhProSearch/HhProSearchProps';
@@ -41,7 +41,9 @@ const getSearchItems = (props?: any) => {
       key: 3,
       name: 'createTime',
       label: i18next.tEn('$HHac14.createTime.Create Time$HH'),
-      componentType: 'DatePicker',
+      render: () => {
+      return <HhQueryDatePicker  />;
+    }
     },
   ];
   return data;

@@ -29,7 +29,7 @@ const DemoIndex = () => {
     total,
     getTableData,
     startRetrieveData,
-  } = useHhTable<API.ComponentDto>({ initData: [] });
+  } = useHhTable({ initData: [] });
 
   const { actions, proSearchForm, proSearchData, proSearchDataRef } = useHhProSearch({
     initialValues,
@@ -65,7 +65,6 @@ const DemoIndex = () => {
 
       {/* 搜索 */}
       <HhProSearch
-      
         actions={actions}
         form={proSearchForm}
         queryRequest={getList}
