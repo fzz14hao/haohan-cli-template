@@ -2,7 +2,7 @@
   "name": "ui",
   "version": "1.0.0",
   "private": true,
-  "platform": "",
+  "platform": "输入你的平台",
   "description": "浩汉智能",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
