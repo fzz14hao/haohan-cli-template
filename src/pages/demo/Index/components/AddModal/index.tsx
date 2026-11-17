@@ -17,7 +17,7 @@ const AddModal = (props: HhButtonModalProps) => {
     onValuesChange,
     setFieldsValue,
     isLoading,
-  } = useHhForm<any>({
+  } = useHhForm({
     initFormData: parentData,
   });
 
